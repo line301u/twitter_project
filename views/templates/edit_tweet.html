@@ -1,0 +1,17 @@
+<div class="edit_tweet_container hidden">
+    <div class="edit_tweet">
+        <form id="edit-tweet-form" onsubmit="return false">
+            <input name="tweet_id" type="hidden">
+            <label>Tweet text</label>
+            <input name="tweet_text" type="text">
+            <input name="tweet_image_path" type="hidden">
+            <img class="tweet_image_tag hidden" src="" alt="Tweet image">
+            <label class="edit-tweet-file-uplad">Upload an image</label>
+            <input type="file" id="tweet_image" name="tweet_image">
+            <div class="button-wrapper">
+                <span onclick="cancelEditTweet()" class="cancel-edit">Cancel</span>
+                <button onclick="updateTweet()">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

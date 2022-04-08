@@ -1,0 +1,22 @@
+<template class="tweet_template">
+    <form class="" onsubmit="return false">
+            <input class="tweet_id" name="tweet_id" type="hidden" value="">
+            <div>
+            <img class="user_profile_picture" src="" alt="Profile picture">
+            <p>
+                <span class="tweet_first_name"></span>
+                <span class="tweet_last_name"></span>
+                <span class="tweet_created_at"></span>
+                <span class="tweet_updated_at hidden"></span>
+                <span class="tweet_user_name"></span>
+            </p>
+            </div>
+        <p class="tweet_text"></p>
+        <input class="tweet_image_path" name="tweet_image_path" type="hidden" value="">
+        <img class="tweet_image" src="" alt="Tweet image">
+        <div class="button-wrapper">
+            <button onclick="openEditTweet()">Edit</button>
+            <button onclick="deleteTweet()">Delete tweet</button>
+        </div>
+    </form>
+</template>

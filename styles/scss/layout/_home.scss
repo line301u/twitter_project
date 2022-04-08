@@ -1,0 +1,36 @@
+.tweets_wrapper {
+    form {
+        border: 0.2px solid grey;
+        margin: 2rem;
+        
+        img{
+            width: 100px;
+            height: 100px;
+        }
+    }
+}
+
+.edit_tweet_container {
+    border: 0.2px solid grey;
+    margin: 2rem;
+
+    .tweet_image_tag {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+.post_tweet-wrapper{
+    border: 0.2px solid blue;
+    padding: 2rem;
+    margin: 2rem;
+}
+
+.follow_recomendations{
+    border: 0.2px solid grey;
+    margin: 2rem;
+    padding: 1rem;
+    .follow_recomendations_form{
+        padding: 1rem;
+    }
+}

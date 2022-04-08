@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.tweets_wrapper form {
+  border: 0.2px solid grey;
+  margin: 2rem;
+}
+.tweets_wrapper form img {
+  width: 100px;
+  height: 100px;
+}
+
+.edit_tweet_container {
+  border: 0.2px solid grey;
+  margin: 2rem;
+}
+.edit_tweet_container .tweet_image_tag {
+  width: 100px;
+  height: 100px;
+}
+
+.post_tweet-wrapper {
+  border: 0.2px solid blue;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+.follow_recomendations {
+  border: 0.2px solid grey;
+  margin: 2rem;
+  padding: 1rem;
+}
+.follow_recomendations .follow_recomendations_form {
+  padding: 1rem;
+}
+
+/*# sourceMappingURL=app.css.map */
