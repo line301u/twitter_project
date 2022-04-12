@@ -4,14 +4,19 @@ from bottle import run, get, static_file
 import welcome_page_get   # GET
 import home_get           # GET
 import logout_get         # GET
+import user_profile_get   # GET
+import admin_panel_get    # GET
+import send_email_get     # GET
 
 import signup_post       # POST
 import login_post        # POST
 import tweet_post        # POST
 import follow_post       # POST
+import like_post         # POST
 
 import tweet_delete    # DELETE
 import follow_delete   # DELETE
+import like_delete     # DELETE
 
 import tweet_update       # PUT
 
@@ -22,6 +27,11 @@ def _():
 
 #####################################
 @get("/app.js")
+def _():
+    return static_file("app.js", root="./script")
+
+#####################################
+@get("/user/app.js")
 def _():
     return static_file("app.js", root="./script")
 
@@ -37,3 +47,4 @@ def _(image_name):
 
 ###############################
 run(host="127.0.0.1", port="3333", debug=True, reloader=True)
+

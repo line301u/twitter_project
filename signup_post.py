@@ -6,6 +6,7 @@ import os
 import uuid
 import sqlite3
 import time
+from send_email_get import send_email
 
 @post("/signup")
 def _():
@@ -126,7 +127,9 @@ def _():
         db_connection = sqlite3.connect("./database/database.sql")
         if db_connection:
             db_connection.execute("INSERT INTO users VALUES(:user_id, :user_name, :user_first_name, :user_last_name, :user_email, :user_profile_picture_path, :user_created_at, :user_password)", user).rowcount
-            db_connection.commit()
+            # db_connection.commit()
+
+            send_email(user)
 
     except Exception as ex: 
         print(ex)

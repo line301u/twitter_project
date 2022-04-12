@@ -5,15 +5,15 @@ import re
 import sqlite3
 
 
-@delete("/delete-follow")
-def _():
+@delete("/unfollow-user/<user_id>")
+def _(user_id):
     try:
         # VALIDATION
-        if not request.forms.get("user_id"):
+        if not user_id:
             response.status = 204
             return "user_id is missing"
 
-        if not re.match(g.REGEX_USER_ID, request.forms.get("user_id")):
+        if not re.match(g.REGEX_ID, user_id):
             response.status = 400
             return "user_id is not valid"
         
@@ -25,16 +25,16 @@ def _():
             response.status = 204
             return "user_id is missing"
 
-        if not re.match(g.REGEX_USER_ID, str(encoded_user_information["user_id"])):
+        if not re.match(g.REGEX_ID, str(encoded_user_information["user_id"])):
             response.status = 400
             return "user_id is not valid"
         
-        if str(encoded_user_information["user_id"]) == request.forms.get("user_id"):
+        if str(encoded_user_information["user_id"]) == user_id:
             return "user cannot unfollow itself"
 
         # SUCESS
         unfollow_initiator_user_id = encoded_user_information["user_id"]
-        unfollow_reciever_user_id = request.forms.get("user_id")
+        unfollow_reciever_user_id = user_id
 
     except Exception as ex:
         print(ex)
@@ -42,6 +42,18 @@ def _():
     try:
         db_connection = sqlite3.connect("./database/database.sql")
 
+        # CHECK IF FOLLOW EXISTS
+        user_is_followed_by_user = db_connection.execute("""
+        SELECT *
+        FROM followers
+        WHERE fk_follow_initiator = ? and fk_follow_reciever = ?
+        """, (unfollow_initiator_user_id, unfollow_reciever_user_id)).fetchone()
+        print(user_is_followed_by_user)
+
+        if not user_is_followed_by_user:
+            return "follow doesnt exist"
+
+        # DELETE FOLLOW
         if db_connection:
             db_connection.execute("""
             DELETE FROM followers

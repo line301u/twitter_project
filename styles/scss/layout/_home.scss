@@ -1,36 +1,190 @@
-.tweets_wrapper {
-    form {
-        border: 0.2px solid grey;
-        margin: 2rem;
-        
-        img{
-            width: 100px;
-            height: 100px;
+@use "../global/varibles" as v;
+
+
+.home_main{
+    display:grid;
+    grid-template-columns: 1fr 2fr 1.4fr;
+    grid-template-rows: 1fr min-content;
+    margin-bottom: 3rem;
+}
+
+.post_tweet-wrapper {
+    display: flex;
+    border: 1px solid v.$line-color;
+    padding: 1rem;
+
+    .user_profile_picture {
+        height: 60px;
+        width: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+        flex-shrink: 1;
+    }
+    form{
+        flex-grow: 1;
+    }
+    .buttons-wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding:  1rem 0 0 1rem;
+    }
+    .tweet_text{
+        width: 80%;
+        margin: 1rem;
+        border: none;
+        min-height: 40px;
+
+        &::placeholder{
+            color: v.$grey;
+            font-size: 1.2rem;
         }
+        &:focus{
+            border: none;
+            outline: none;
+        }
+    }
+    label{
+        position: relative;
+    }
+    .checkmark{
+        position: absolute;
+        width: 15px;
+        right: 8px;
+        top: -7px;
+        color: green;
+    }
+    .filename{
+        max-width: 250px;
+        display: block;
+        font-size: 0.8rem;
+        color: v.$grey;
+        
+    }
+    .icon{
+        width: 20px;
+        height: auto;
+        color: v.$twitter-blue;
+        margin-right: 0.5rem;
+    }
+}
+
+.follow_recomendations{
+    background-color: v.$grey-bg;
+    border-radius: 20px;
+    margin: 0 1rem 1rem 1rem;
+    padding: 1rem;
+    position: fixed;
+    width: 350px;
+    margin-top: 1rem;
+
+    .user_profile_picture{
+        height: 60px;
+        width: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 1rem;
+        grid-template-rows: 100%;
+    }
+
+    .follow_recomendations_form{
+        margin: 1.4rem 0;
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        align-items: center;
+    }
+
+    h3:hover{
+        text-decoration: underline;
     }
 }
 
 .edit_tweet_container {
-    border: 0.2px solid grey;
-    margin: 2rem;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    top: 0;
+
+    .user_profile_picture {
+        height: 60px;
+        width: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+        flex-shrink: 1;
+    }
+
+    .underlay{
+        height: 100vh;
+        width: 100vw;
+        background-color: black;
+        opacity: 0.5;
+        top: 0;
+        left: 0;
+        position: fixed;
+    }
+    .edit_tweet{
+        z-index: 5;
+        background-color: white;
+        display: flex;
+        padding: 1rem;
+        border-radius: 20px;
+        input[name="tweet_text"] {
+            border: none;
+            background: none;
+            min-height: 40px;
+            width: 450px;
+            margin: 1rem;
+        }
+        input[name="tweet_text"]:focus {
+            outline: none;
+        }
+        .cancel-edit{
+            color: v.$grey;
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+    }
+
+    .edit_tweet_bottom{
+        margin: 1rem 0 0 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
     .tweet_image_tag {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: auto;
+        margin: 1rem;
+        border-radius: 20px;
+        border: 0.5px solid v.$line-color;
     }
-}
-
-.post_tweet-wrapper{
-    border: 0.2px solid blue;
-    padding: 2rem;
-    margin: 2rem;
-}
-
-.follow_recomendations{
-    border: 0.2px solid grey;
-    margin: 2rem;
-    padding: 1rem;
-    .follow_recomendations_form{
-        padding: 1rem;
+    label{
+        position: relative;
+    }
+    .checkmark{
+        position: absolute;
+        width: 15px;
+        right: 8px;
+        top: -7px;
+        color: green;
+    }
+    .filename{
+        max-width: 250px;
+        display: block;
+        font-size: 0.8rem;
+        color: v.$grey;
+        
+    }
+    .icon{
+        width: 20px;
+        height: auto;
+        color: v.$twitter-blue;
+        margin-right: 0.5rem;
     }
 }

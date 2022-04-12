@@ -1,44 +1,483 @@
+p, .p, span {
+  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.2rem;
+}
+
+a {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  text-decoration: none;
+  color: black;
+  font-size: 0.875rem;
+}
+
+p, a, span, h3, h2, h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+h2, .h2 {
+  font-size: 1.2rem;
+}
+
+.user_name {
+  color: rgb(91, 111, 126);
+  font-size: 0.875rem;
+  font-weight: 400;
+  display: block;
+}
+
 * {
-  box-sizing: border-box;
+  box-sizing: border-box !important;
   margin: 0;
   padding: 0;
 }
 
-.hidden {
-  display: none;
+body {
+  max-width: 1250px;
+  margin: 0 auto;
 }
 
-.tweets_wrapper form {
-  border: 0.2px solid grey;
-  margin: 2rem;
-}
-.tweets_wrapper form img {
-  width: 100px;
-  height: 100px;
+.hidden, .home_section_left .active-page-profile {
+  display: none !important;
 }
 
-.edit_tweet_container {
-  border: 0.2px solid grey;
-  margin: 2rem;
-}
-.edit_tweet_container .tweet_image_tag {
+.follow-button {
   width: 100px;
-  height: 100px;
+  background: black;
+  padding: 0.5rem 0.3rem;
+  border-radius: 9999px;
+  border: none;
+  width: 80px;
+  color: white;
+  font-weight: 600;
+}
+
+.unfollow-button {
+  width: 100px;
+  background: transparent;
+  border: 1px solid rgb(207, 217, 222);
+  padding: 0.5rem 0.3rem;
+  border-radius: 9999px;
+  width: 80px;
+  color: black;
+  font-weight: 600;
+}
+
+.blue-button {
+  width: 100px;
+  background: rgb(29, 155, 240);
+  padding: 0.5rem 0.3rem;
+  border-radius: 9999px;
+  border: none;
+  width: 80px;
+  color: white;
+  font-weight: 600;
+}
+
+.icon-disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pointer, .dislike-button, .like-button, button {
+  cursor: pointer;
+}
+
+.like-button {
+  height: 20px;
+  width: 20px;
+  background: none;
+  border: none;
+  fill: rgb(91, 111, 126);
+}
+.like-button svg {
+  pointer-events: none;
+}
+
+.dislike-button {
+  height: 20px;
+  width: 20px;
+  background: none;
+  border: none;
+  fill: rgb(249, 24, 128);
+}
+.dislike-button svg {
+  pointer-events: none;
+}
+
+.twitter-verification-wrapper {
+  position: relative;
+  margin-left: 0.2rem;
+  width: 20px;
+  height: 20px;
+}
+.twitter-verification-wrapper .twitter-verification {
+  color: rgb(29, 155, 240);
+  position: absolute;
+}
+
+.logo {
+  color: rgb(29, 155, 240);
+  width: 35px;
+  height: 35px;
+}
+
+.home_main {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.4fr;
+  grid-template-rows: 1fr min-content;
+  margin-bottom: 3rem;
 }
 
 .post_tweet-wrapper {
-  border: 0.2px solid blue;
-  padding: 2rem;
-  margin: 2rem;
+  display: flex;
+  border: 1px solid #f0f0f0;
+  padding: 1rem;
+}
+.post_tweet-wrapper .user_profile_picture {
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 1;
+}
+.post_tweet-wrapper form {
+  flex-grow: 1;
+}
+.post_tweet-wrapper .buttons-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0 0 1rem;
+}
+.post_tweet-wrapper .tweet_text {
+  width: 80%;
+  margin: 1rem;
+  border: none;
+  min-height: 40px;
+}
+.post_tweet-wrapper .tweet_text::placeholder {
+  color: rgb(91, 111, 126);
+  font-size: 1.2rem;
+}
+.post_tweet-wrapper .tweet_text:focus {
+  border: none;
+  outline: none;
+}
+.post_tweet-wrapper label {
+  position: relative;
+}
+.post_tweet-wrapper .checkmark {
+  position: absolute;
+  width: 15px;
+  right: 8px;
+  top: -7px;
+  color: green;
+}
+.post_tweet-wrapper .filename {
+  max-width: 250px;
+  display: block;
+  font-size: 0.8rem;
+  color: rgb(91, 111, 126);
+}
+.post_tweet-wrapper .icon {
+  width: 20px;
+  height: auto;
+  color: rgb(29, 155, 240);
+  margin-right: 0.5rem;
 }
 
 .follow_recomendations {
-  border: 0.2px solid grey;
-  margin: 2rem;
+  background-color: rgb(247, 249, 249);
+  border-radius: 20px;
+  margin: 0 1rem 1rem 1rem;
   padding: 1rem;
+  position: fixed;
+  width: 350px;
+  margin-top: 1rem;
+}
+.follow_recomendations .user_profile_picture {
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 1rem;
+  grid-template-rows: 100%;
 }
 .follow_recomendations .follow_recomendations_form {
+  margin: 1.4rem 0;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+}
+.follow_recomendations h3:hover {
+  text-decoration: underline;
+}
+
+.edit_tweet_container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: 0;
+}
+.edit_tweet_container .user_profile_picture {
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 1;
+}
+.edit_tweet_container .underlay {
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+.edit_tweet_container .edit_tweet {
+  z-index: 5;
+  background-color: white;
+  display: flex;
   padding: 1rem;
+  border-radius: 20px;
+}
+.edit_tweet_container .edit_tweet input[name=tweet_text] {
+  border: none;
+  background: none;
+  min-height: 40px;
+  width: 450px;
+  margin: 1rem;
+}
+.edit_tweet_container .edit_tweet input[name=tweet_text]:focus {
+  outline: none;
+}
+.edit_tweet_container .edit_tweet .cancel-edit {
+  color: rgb(91, 111, 126);
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+.edit_tweet_container .edit_tweet_bottom {
+  margin: 1rem 0 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.edit_tweet_container .tweet_image_tag {
+  width: 150px;
+  height: auto;
+  margin: 1rem;
+  border-radius: 20px;
+  border: 0.5px solid #f0f0f0;
+}
+.edit_tweet_container label {
+  position: relative;
+}
+.edit_tweet_container .checkmark {
+  position: absolute;
+  width: 15px;
+  right: 8px;
+  top: -7px;
+  color: green;
+}
+.edit_tweet_container .filename {
+  max-width: 250px;
+  display: block;
+  font-size: 0.8rem;
+  color: rgb(91, 111, 126);
+}
+.edit_tweet_container .icon {
+  width: 20px;
+  height: auto;
+  color: rgb(29, 155, 240);
+  margin-right: 0.5rem;
+}
+
+.tweets_wrapper form, .user_tweets_wrapper form {
+  display: grid;
+  grid-template-columns: 76px auto auto auto auto;
+  grid-template-areas: "user_image user_info user_info user_info button" "user_image tweet_text tweet_text tweet_text tweet_text" "user_image tweet_image tweet_image tweet_image tweet_image" "user_image tweet_activity tweet_activity tweet_activity tweet_activity";
+  border-left: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 1rem;
+}
+.tweets_wrapper .view-more, .user_tweets_wrapper .view-more {
+  width: 20px;
+  color: rgb(91, 111, 126);
+  cursor: pointer;
+}
+.tweets_wrapper .user_profile_picture, .user_tweets_wrapper .user_profile_picture {
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  grid-area: user_image;
+  margin-right: 1rem;
+  grid-template-rows: 100%;
+}
+.tweets_wrapper .user_first_name, .tweets_wrapper .user_last_name, .user_tweets_wrapper .user_first_name, .user_tweets_wrapper .user_last_name {
+  font-weight: 600;
+  color: black;
+}
+.tweets_wrapper .tweet_text, .user_tweets_wrapper .tweet_text {
+  grid-area: tweet_text;
+  margin-top: 0.3rem;
+}
+.tweets_wrapper .button-wrapper, .user_tweets_wrapper .button-wrapper {
+  grid-area: button;
+}
+.tweets_wrapper .tweet_image, .user_tweets_wrapper .tweet_image {
+  grid-area: tweet_image;
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border: 0.5px solid rgb(91, 111, 126);
+  border-radius: 20px;
+  margin-top: 1rem;
+}
+.tweets_wrapper .tweet_activity, .user_tweets_wrapper .tweet_activity {
+  grid-area: tweet_activity;
+  margin-top: 1rem;
+}
+.tweets_wrapper .user_first_name, .tweets_wrapper .user_last_name, .user_tweets_wrapper .user_first_name, .user_tweets_wrapper .user_last_name {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.tweets_wrapper .tweet_created_at, .user_tweets_wrapper .tweet_created_at {
+  color: rgb(91, 111, 126);
+}
+.tweets_wrapper .user_info, .user_tweets_wrapper .user_info {
+  grid-area: user_info;
+}
+.tweets_wrapper .user_info a, .user_tweets_wrapper .user_info a {
+  display: inline-flex;
+}
+.tweets_wrapper .user_info a:hover, .user_tweets_wrapper .user_info a:hover {
+  text-decoration: underline;
+}
+.tweets_wrapper .button-wrapper, .user_tweets_wrapper .button-wrapper {
+  position: relative;
+}
+.tweets_wrapper .button-wrapper .view-more, .user_tweets_wrapper .button-wrapper .view-more {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.tweets_wrapper .button-wrapper .button-wrapper-inner, .user_tweets_wrapper .button-wrapper .button-wrapper-inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 300px;
+  height: auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  box-shadow: 0px 2.3px 3.6px rgba(0, 0, 0, 0.059), 0px 6.4px 10px rgba(0, 0, 0, 0.085), 0px 15.4px 24.1px rgba(0, 0, 0, 0.111), 0px 51px 80px rgba(0, 0, 0, 0.17);
+}
+.tweets_wrapper .button-wrapper .button-wrapper-inner .underlay, .user_tweets_wrapper .button-wrapper .button-wrapper-inner .underlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+}
+.tweets_wrapper .button-wrapper .button-wrapper-inner button, .user_tweets_wrapper .button-wrapper .button-wrapper-inner button {
+  padding: 1rem;
+  background-color: transparent;
+  border: none;
+  text-align: start;
+  transition: 0.3s;
+  z-index: 2;
+  display: inline-block;
+}
+.tweets_wrapper .button-wrapper .button-wrapper-inner button:hover, .user_tweets_wrapper .button-wrapper .button-wrapper-inner button:hover {
+  background-color: rgb(247, 249, 249);
+  transition: 0.3s;
+}
+.tweets_wrapper .button-wrapper .button-wrapper-inner button svg, .tweets_wrapper .button-wrapper .button-wrapper-inner button span, .user_tweets_wrapper .button-wrapper .button-wrapper-inner button svg, .user_tweets_wrapper .button-wrapper .button-wrapper-inner button span {
+  color: rgb(91, 111, 126);
+  width: 20px;
+  height: 20px;
+}
+
+.home_section_left {
+  position: relative;
+}
+.home_section_left .nav-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 1rem 0;
+  height: 100vh;
+  position: fixed;
+}
+.home_section_left nav {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+}
+.home_section_left nav svg {
+  height: 20px;
+  width: 20px;
+}
+.home_section_left nav .icon-disabled {
+  opacity: 0.3;
+}
+.home_section_left nav a {
+  position: relative;
+  margin-bottom: 1.7rem;
+  font-size: 1.3rem;
+}
+.home_section_left nav a .nav-icon {
+  margin-right: 0.5rem;
+  position: relative;
+  top: 2px;
+}
+.home_section_left .user_profile_picture {
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  grid-area: user_image;
+  margin-right: 1rem;
+  grid-template-rows: 100%;
+}
+.home_section_left .nav_user_info {
+  display: flex;
+}
+.home_section_left .user_name {
+  margin-bottom: 0.5rem;
+  color: rgb(91, 111, 126);
+}
+.home_section_left .logout-button {
+  color: rgb(29, 155, 240);
+}
+.home_section_left .logout-button:hover {
+  text-decoration: underline;
+}
+
+.active-page-profile, .active-page-home {
+  position: absolute;
+  left: 14px;
+  top: -2px;
+  height: 6px;
+  width: 6px;
+  background-color: rgb(29, 155, 240);
+  border-radius: 50%;
 }
 
 /*# sourceMappingURL=app.css.map */

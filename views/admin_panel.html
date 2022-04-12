@@ -1,0 +1,46 @@
+% include("header", title="Admin Panel")
+
+<main>
+<h1>Admin panel</h1>
+
+<section>
+    <div class="admin_tweets_wrapper">
+        % if tweets == []:
+        <span class="no-tweets-message">Sorry, no tweets to show</span>
+        % end 
+        % for tweet in tweets:
+        <div>
+            <form class="tweet-{{tweet['tweet_id']}}" onsubmit="return false">
+                    <input class="tweet_id" name="tweet_id" type="hidden" value="{{tweet['tweet_id']}}">
+                    <input class="user_id" name="user_id" type="hidden" value="{{tweet['user_id']}}">
+                    <div>
+                    % if tweet["user_profile_picture_path"]:
+                    <img class="user_profile_picture" src="../images/user_profile_pictures/{{tweet['user_profile_picture_path']}}" alt="Profile picture">
+                    % end
+                    <a type="button" href="/user/{{tweet['user_id']}}">
+                    <span class="user_first_name">{{tweet["user_first_name"]}}</span>
+                    % if tweet["user_last_name"]:
+                    <span class="user_last_name">{{tweet["user_last_name"]}}</span>
+                    % end
+                    </a>
+                    <span class="tweet_created_at">·{{tweet["tweet_created_at"]}}</span>
+                    <span class="tweet_updated_at hidden">{{tweet["tweet_updated_at"]}}</span>
+                    <span class="user_name">@{{tweet["user_name"]}}</span>
+                </div>
+                <p class="tweet_text">{{tweet["tweet_text"]}}</p>
+                <input class="tweet_image_path" name="tweet_image_path" type="hidden" value="{{tweet['tweet_image_path']}}">
+                % if tweet["tweet_image_path"] and tweet["tweet_image_path"] != "0":
+                <img class="tweet_image" src="../images/tweet_images/{{tweet['tweet_image_path']}}" alt="Tweet image">
+                % end
+                <div class="button-wrapper">
+                    <button onclick="deleteTweet()">Delete tweet</button>
+                </div>
+            </form>
+        </div>
+        % end 
+    </div>
+</section>
+
+</main>
+
+% include("footer")

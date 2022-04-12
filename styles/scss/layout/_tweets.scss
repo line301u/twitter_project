@@ -1,0 +1,133 @@
+@use "../global/varibles" as v;
+
+.tweets_wrapper, .user_tweets_wrapper {
+    form {
+        display:grid;
+        grid-template-columns: 76px auto auto auto auto;
+        grid-template-areas: 
+                    "user_image user_info user_info user_info button"
+                    "user_image tweet_text tweet_text tweet_text tweet_text"
+                    "user_image tweet_image tweet_image tweet_image tweet_image"
+                    "user_image tweet_activity tweet_activity tweet_activity tweet_activity";
+
+        border-left: 1px solid v.$line-color;
+        border-right: 1px solid v.$line-color;
+        border-bottom: 1px solid v.$line-color;
+
+        padding: 1rem;
+    }
+    .view-more{
+        width: 20px;
+        color: v.$grey;
+        cursor: pointer;
+    }
+    .user_profile_picture{
+        height: 60px;
+        width: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+        grid-area: user_image;
+        margin-right: 1rem;
+        grid-template-rows: 100%;
+    }
+
+    .user_first_name, .user_last_name{
+        font-weight: 600;
+        color: v.$dark-font-color;
+    }
+    .tweet_text{
+        grid-area: tweet_text;
+
+        margin-top: 0.3rem;
+    }
+    .button-wrapper{
+        grid-area: button;
+    }
+    .tweet_image{
+        grid-area: tweet_image;
+
+        width: 100%;
+        height: auto;
+        max-height: 380px;
+        object-fit: cover;
+        object-position: 50% 50%;
+        border: 0.5px solid v.$grey;
+        border-radius: 20px;
+        margin-top: 1rem;
+    }
+
+    .tweet_activity{
+        grid-area: tweet_activity;
+        margin-top: 1rem;
+    }
+
+    .user_first_name, .user_last_name{
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+    .tweet_created_at{
+        color: v.$grey;
+    }
+
+    .user_info{
+        grid-area: user_info;
+        a{
+            display: inline-flex
+        }
+        a:hover{
+            text-decoration: underline;
+        }
+    }
+    .button-wrapper{
+        position: relative;
+        .view-more{
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .button-wrapper-inner{
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+            width: 300px;
+            height: auto;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            text-align: start;
+            box-shadow:
+                0px 2.3px 3.6px rgba(0, 0, 0, 0.059),
+                0px 6.4px 10px rgba(0, 0, 0, 0.085),
+                0px 15.4px 24.1px rgba(0, 0, 0, 0.111),
+                0px 51px 80px rgba(0, 0, 0, 0.17)
+            ;
+            .underlay{
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 100vw;
+            }
+
+            button{
+                padding: 1rem;
+                background-color: transparent;
+                border: none;
+                text-align: start;
+                transition: 0.3s;
+                z-index: 2;
+                display: inline-block;
+                &:hover{
+                    background-color: v.$grey-bg;
+                    transition: 0.3s;
+                }
+                svg, span{
+                    color: v.$grey;
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+}

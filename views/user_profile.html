@@ -1,0 +1,80 @@
+% include("header", title=user['user_name'])
+
+<main>
+    % include("./templates/edit_tweet")
+    <section>
+            <form onsubmit="return false">
+                <input name="user_id" type="hidden" value="{{user['user_id']}}">
+                <img src="../images/user_profile_pictures/{{user['user_profile_picture_path']}}" alt="">
+                % if user["followed_by_user"]:
+                <button class="follow-button hidden" onclick="createFollow()">Follow</button>
+                <button class="unfollow-button" onclick="deleteFollow()">Unfollow</button>
+                % else:
+                <button class="follow-button" onclick="createFollow()">Follow</button>
+                <button class="unfollow-button hidden" onclick="deleteFollow()">Unfollow</button>
+                % end
+            </form>
+            <h3>
+            {{user["user_first_name"]}}
+            % if user["user_last_name"]:
+            {{user["user_last_name"]}}
+            % end
+                <span>@{{user["user_name"]}}</span>
+            </h3>
+
+            <p class="user_created_date">·{{user["user_created_at"]}}</p>
+            <div class="follow_count">
+                <p class="user_following_wrap">
+                <span class="user_following_count"></span>
+                </p>
+                <p class="user_followers_wrap">
+                <span class="user_followers_count"></span>
+                </p>
+            </div>
+    </section>
+    <div class="user_tweets_wrapper">
+        % if tweets == []:
+        <span class="no-tweets-message">User haven't tweeted yet</span>
+        % end 
+        % for tweet in tweets:
+            <form class="tweet-{{tweet['tweet_id']}}">
+                    <input class="tweet_id" name="tweet_id" type="hidden" value="{{tweet['tweet_id']}}">
+                    <div>
+                    % if user["user_profile_picture_path"]:
+                    <img class="user_profile_picture" src="../images/user_profile_pictures/{{user['user_profile_picture_path']}}" alt="Profile picture">
+                    % end
+                    <span class="user_first_name">{{user["user_first_name"]}}</span>
+                    % if user["user_last_name"]:
+                    <span class="user_last_name">{{user["user_last_name"]}}</span>
+                    % end
+                    <span class="tweet_created_at">{{tweet["tweet_created_at"]}}</span>
+                    % if tweet["tweet_updated_at"]:
+                    <span class="tweet_updated_at hidden">{{tweet["tweet_updated_at"]}}</span>
+                    % end
+                    <span class="user_name">@{{user["user_name"]}}</span>
+                </div>
+                <p class="tweet_text">{{tweet["tweet_text"]}}</p>
+                <input class="tweet_image_path" name="tweet_image_path" type="hidden" value="{{tweet['tweet_image_path']}}">
+                % if tweet["tweet_image_path"] and tweet["tweet_image_path"] != "0":
+                <img class="tweet_image" src="../images/tweet_images/{{tweet['tweet_image_path']}}" alt="Tweet image">
+                % end
+                % if tweet["fk_user_id"] == user["user_id"]:
+                <div class="button-wrapper">
+                    <svg class="view-more" viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi" fill="currentColor"><g><circle cx="5" cy="12" r="2" fill="currentColor"></circle><circle cx="12" cy="12" r="2" fill="currentColor"></circle><circle cx="19" cy="12" r="2" fill="currentColor"></circle></g></svg>
+                    <button onclick="openEditTweet()">Edit</button>
+                    <button onclick="deleteTweet()">Delete tweet</button>
+                </div>
+                % end
+                <div class="tweet_activity">
+                % if tweet["fk_user_id"] != user["user_id"]:
+                    <button>Like</button>
+                    <button>Unlike</button>
+                % end
+                </div>
+            </form>
+            % end 
+        </div>
+    </div>
+</main>
+
+% include("footer")

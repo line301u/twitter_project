@@ -39,13 +39,14 @@ async function postTweet(){
 
     displayTweet(tweet);
 
-    form.querySelector("#tweet_image").value = "";
+    form.querySelector("#image_upload").value = "";
     form.querySelector(".tweet_text").value = "";
 }
 
 async function displayTweet(tweet){
     const container = document.querySelector(".tweets_wrapper");
     const template = document.querySelector('.tweet_template');
+    console.log(tweet)
 
     if ('content' in document.createElement('template')) {
         // CREATE CLONE OF TWEET TEMPLATE
@@ -53,15 +54,17 @@ async function displayTweet(tweet){
 
         clone.querySelector("form").classList.add(`tweet-${tweet.tweet_id}`);
         clone.querySelector(".tweet_id").value = tweet.tweet_id;
+        clone.querySelector(".user_id").value = tweet.fk_user_id;
         clone.querySelector(".user_profile_picture").src = `../images/user_profile_pictures/${tweet.user_profile_picture_path}`;
-        clone.querySelector(".tweet_first_name").textContent = tweet.user_first_name;
+        clone.querySelector(".user_first_name").textContent = tweet.user_first_name;
+        clone.querySelector(".user_info a").href = `/user/${tweet.fk_user_id}`;
 
         if (tweet.user_last_name) {
-            clone.querySelector(".tweet_last_name").textContent = tweet.user_last_name;
+            clone.querySelector(".user_last_name").textContent = tweet.user_last_name;
         }
 
-        clone.querySelector(".tweet_created_at").textContent = tweet.tweet_created_at;
-        clone.querySelector(".tweet_user_name").textContent = `@${tweet.user_name}`;
+        clone.querySelector(".tweet_created_at").textContent = ` · ${tweet.tweet_created_at}`;
+        clone.querySelector(".user_name").textContent = `@${tweet.user_name}`;
         clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
         clone.querySelector(".tweet_image_path").value = tweet.tweet_image_path;
 
@@ -83,7 +86,7 @@ async function deleteTweet(){
 
     // CREATE REQUEST
     const connection = await fetch(`/delete-tweet/${tweet_id}`, {
-        method : "DELETE",
+        method : "DELETE"
     });
 
     // CREATE FAILED
@@ -104,25 +107,31 @@ function openEditTweet(){
     let targetTweet = event.target.form;
     const edit_tweet_form = document.querySelector(".edit_tweet_container")
     edit_tweet_form.classList.remove("hidden");
+    targetTweet.querySelector(".button-wrapper-inner").classList.add("hidden");
 
     target_tweet = {
         "tweet_id" : targetTweet.querySelector("input[name='tweet_id']").value,
         "tweet_text" : targetTweet.querySelector(".tweet_text").innerHTML,
-        "tweet_image_path" : targetTweet.querySelector("input[name='tweet_image_path']").value
+        "tweet_image_path" : targetTweet.querySelector("input[name='tweet_image_path']").value,
+        "profile_picture_path" : targetTweet.querySelector(".user_profile_picture").getAttribute('src')
     }
+
+    console.log(target_tweet)
 
     // CREATE UPDATE TWEET ELEMENT
     edit_tweet_form.querySelector("input[name='tweet_text']").value = target_tweet["tweet_text"];
     edit_tweet_form.querySelector("input[name='tweet_id']").value = target_tweet["tweet_id"];
+    edit_tweet_form.querySelector(".user_profile_picture").src = `${target_tweet["profile_picture_path"]}`;
 
     // // CHECK IF TWEET INCLUDES AN IMAGE
     if (target_tweet["tweet_image_path"] && target_tweet["tweet_image_path"] !== "0"){
         edit_tweet_form.querySelector(".tweet_image_tag").src = `../images/tweet_images/${target_tweet["tweet_image_path"]}`
         edit_tweet_form.querySelector("input[name='tweet_image_path']").value = target_tweet["tweet_image_path"];
         edit_tweet_form.querySelector(".tweet_image_tag").classList.remove("hidden")
-        edit_tweet_form.querySelector(".edit-tweet-file-uplad").textContent = "Do you want to change the image?"
+        edit_tweet_form.querySelector(".filename").textContent = "Do you want to change the image?"
     } else {
-        edit_tweet_form.querySelector(".edit-tweet-file-uplad").textContent = ""
+        edit_tweet_form.querySelector(".filename").textContent = ""
+        edit_tweet_form.querySelector(".checkmark").classList.add("hidden")
     }
 }
 
@@ -130,6 +139,8 @@ function cancelEditTweet(){
     let edit_tweet_container = document.querySelector(".edit_tweet_container");
     edit_tweet_container.classList.add("hidden");
     edit_tweet_container.querySelector(".tweet_image_tag").classList.add("hidden")
+    edit_tweet_container.querySelector(".filename").textContent = ""
+    edit_tweet_container.querySelector(".checkmark").classList.add("hidden")
 }
 
 ////////////////////////////////
@@ -152,6 +163,7 @@ async function updateTweet(){
 
     // SUCESS
     const updated_tweet = await connection.json();
+    console.log(updated_tweet)
 
     // DEFINE ELEMENTS TO MANIPULATE DOM
     const edited_tweet_element = document.querySelector(`.tweet-${tweet_id}`)
@@ -179,6 +191,7 @@ async function updateTweet(){
     if (!doesTweetInculdeImage && doesUpdatedTweetInculdeImage){
         const new_image_element = `<img class="tweet_image" src="../images/tweet_images/${updated_tweet.tweet_image_path}" alt="Tweet image value='${updated_tweet.tweet_image_path}'"></img>`
         edited_tweet_element.querySelector(".tweet_image_path").insertAdjacentHTML("afterend", new_image_element);
+        edited_tweet_element.querySelector(".tweet_image_path").value = updated_tweet.tweet_image_path;
     }
 
     // CHANGE IMAGE IN TWEET
@@ -195,6 +208,8 @@ function closeEditTweet(){
     const edit_tweet_container = document.querySelector(".edit_tweet_container");
     edit_tweet_container.classList.add("hidden");
     edit_tweet_container.querySelector(".tweet_image_tag").classList.add("hidden")
+    edit_tweet_container.querySelector(".filename").textContent = ""
+    edit_tweet_container.querySelector(".checkmark").classList.add("hidden")
 }
 
 ////////////////////////////////
@@ -215,13 +230,13 @@ function covertEpochToDateTime(timestamp){
 // CREATE FOLLOW
 async function createFollow(){
     const form = event.target.form;
+    const user_id = form.querySelector("input[name='user_id']").value;
 
     // CREATE REQUEST
-    const connection = await fetch("/follow", {
+    const connection = await fetch(`/follow-user/${user_id}`, {
         method: "POST",
         body : new FormData(form)
     });
-    console.log(connection)
 
     // REQUEST FAILED
     if(!connection.ok){
@@ -231,7 +246,6 @@ async function createFollow(){
 
     // SUCESS
     const response = await connection.text();
-    console.log(response)
 
     toggleFollowButtons(form);
 }
@@ -240,9 +254,77 @@ async function createFollow(){
 // DELETE FOLLOW
 async function deleteFollow(){
     const form = event.target.form;
+    const user_id = form.querySelector("input[name='user_id']").value;
 
     // CREATE REQUEST
-    const connection = await fetch("/delete-follow", {
+    const connection = await fetch(`/unfollow-user/${user_id}`, {
+        method : "DELETE",
+        body : new FormData(form)
+    });
+
+    // CREATE FAILED
+    if(!connection.ok){
+        alert("could not delete follow")
+        return;
+    };
+
+    // SUCESS
+    const response = await connection.text();
+
+    toggleFollowButtons(form);
+}
+
+function toggleFollowButtons(form){
+    // TOGGLE HIDDEN CLASS ON FOLLOW BUTTONS
+    form.querySelector(".follow-button").classList.toggle("hidden")
+    form.querySelector(".unfollow-button").classList.toggle("hidden")
+}
+
+function fileUploaded(event){
+    // CHECK WHEN FILE IS UPLOADED
+    const form = event.target.form;
+    let fileName = event.target.files[0].name;
+    if(fileName){
+        form.querySelector(".checkmark").classList.remove("hidden")
+        form.querySelector(".filename").textContent = fileName;
+        form.querySelector(".tweet_image_tag").classList.add("hidden");
+    }
+}
+
+////////////////////////////////
+// LIKE TWEET
+async function likeTweet(){
+    const form = event.target.form;
+    const tweet_id = form.querySelector("input[name='tweet_id']").value;
+
+    // CREATE REQUEST
+    const connection = await fetch(`/like-tweet/${tweet_id}`, {
+        method: "POST",
+        body : new FormData(form)
+    });
+
+    // REQUEST FAILED
+    if(!connection.ok){
+        alert("could not tweet")
+        return;
+    };
+
+    // SUCESS
+    const response = await connection.text();
+    console.log(response);
+
+    toggleLikeButtons(form);
+}
+
+////////////////////////////////
+// DISLIKE TWEET
+async function dislikeTweet(){
+    const form = event.target.form;
+    console.log(form)
+    const tweet_id = form.querySelector("input[name='tweet_id']").value;
+
+    // CREATE REQUEST
+    const connection = await fetch(`/unlike-tweet/${tweet_id}`, {
         method : "DELETE",
         body : new FormData(form)
     });
@@ -255,11 +337,21 @@ async function deleteFollow(){
 
     // SUCESS
     const response = await connection.text();
-
-    toggleFollowButtons(form);
+    console.log(response);
+    
+    toggleLikeButtons(form);
 }
 
-function toggleFollowButtons(form){
-    form.querySelector(".follow-button").classList.toggle("hidden")
-    form.querySelector(".unfollow-button").classList.toggle("hidden")
+function toggleLikeButtons(form){
+    // TOGGLE HIDDEN CLASS ON LIKE BUTTONS
+    form.querySelector(".like-button").classList.toggle("hidden")
+    form.querySelector(".dislike-button").classList.toggle("hidden")
+}
+
+function openViewMoreOptions(){
+    event.target.nextElementSibling.classList.remove("hidden");
+}
+
+function closeViewMoreOptions(){
+    event.target.closest(".button-wrapper-inner").classList.add("hidden");
 }

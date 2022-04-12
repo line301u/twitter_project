@@ -4,15 +4,15 @@ import g
 import jwt
 import sqlite3
 
-@post("/follow")
-def _():
+@post("/follow-user/<user_id>")
+def _(user_id):
     try:
         # VALIDATION
-        if not request.forms.get("user_id"):
+        if not user_id:
             response.status = 204
             return "user_id is missing"
 
-        if not re.match(g.REGEX_USER_ID, request.forms.get("user_id")):
+        if not re.match(g.REGEX_ID, user_id):
             response.status = 400
             return "user_id is not valid"
 
@@ -24,16 +24,16 @@ def _():
             response.status = 204
             return "user_id is missing"
 
-        if not re.match(g.REGEX_USER_ID, str(encoded_user_information["user_id"])):
+        if not re.match(g.REGEX_ID, str(encoded_user_information["user_id"])):
             response.status = 400
             return "user_id is not valid"
         
-        if str(encoded_user_information["user_id"]) == request.forms.get("user_id"):
+        if str(encoded_user_information["user_id"]) == user_id:
             return "user cannot follow itself"
 
         # SUCESS
         follow_initiator_user_id = encoded_user_information["user_id"]
-        follow_reciever_user_id = request.forms.get("user_id")
+        follow_reciever_user_id = user_id
 
     except Exception as ex:
         print(ex)
@@ -47,8 +47,8 @@ def _():
             INSERT INTO followers(fk_follow_initiator, fk_follow_reciever)
             VALUES(?, ?)
             """, (follow_initiator_user_id, follow_reciever_user_id))
-
-        db_connection.commit()
+            
+            db_connection.commit()
 
         return "follow created"
     
