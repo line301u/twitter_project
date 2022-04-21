@@ -2,17 +2,18 @@
     <div class="underlay"></div>
     <div class="edit_tweet">
         <img class="user_profile_picture" src="" alt="Profile picture">
-        <form id="edit-tweet-form" onsubmit="return false">
+        <form id="edit-tweet-form" onsubmit="validate(updateTweet); return false">
             <input name="tweet_id" type="hidden">
             <div>
-                <input name="tweet_text" type="text">
+                <textarea class="tweet_text" name="tweet_text" id="tweet_text" rows="5" data-validate="str" data-min="1" data-max="280" onkeyup="clear_validate_error()"></textarea>
+                <span class="error_message hidden"></span>
             </div>
             <input name="tweet_image_path" type="hidden">
             <img class="tweet_image_tag hidden" src="" alt="Tweet image">
             <div class="edit_tweet_bottom">
                 <div>
                     <span class="filename"></span>
-                    <input type="file" id="tweet_image" name="tweet_image" class="hidden" onchange="fileUploaded(event)"/>
+                    <input type="file" id="tweet_image" name="tweet_image" class="hidden" onchange="fileUploaded(event)" accept="image/png, image/jpg, image/jpeg" />
                     <label for="tweet_image" class="pointer">
                         <svg class="checkmark hidden" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;"  fill="currentColor" xml:space="preserve">
                             <polygon style="fill:#030104;" points="11.941,28.877 0,16.935 5.695,11.24 11.941,17.486 26.305,3.123 32,8.818    "/>

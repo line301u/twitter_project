@@ -6,7 +6,7 @@
     padding: 0;
 }
 
-body{
+main, footer{
     max-width: 1250px;
     margin: 0 auto;
 }
@@ -23,9 +23,9 @@ body{
     border: none;
     width: 80px;
     color: v.$light-font-color;
-    font-weight: 600;
+    font-weight: 700;
 }
-.unfollow-button{
+.unfollow-button, .white-button{
     width: 100px;
     background: transparent;
     border: 1px solid rgb(207, 217, 222);
@@ -33,7 +33,7 @@ body{
     border-radius: 9999px;
     width: 80px;
     color: v.$dark-font-color;
-    font-weight: 600;
+    font-weight: 700;
 }
 .blue-button{
     width: 100px;
@@ -43,7 +43,7 @@ body{
     border: none;
     width: 80px;
     color: v.$light-font-color;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .icon-disabled{
@@ -97,4 +97,16 @@ button {
     color: v.$twitter-blue;
     width: 35px;
     height: 35px;
+}
+
+.error_message{
+    color: v.$error-text;
+}
+
+.validate_error{
+    background-color: rgb(240 130 162 / 5%) !important;
+}
+
+textarea { 
+    resize: none; 
 }

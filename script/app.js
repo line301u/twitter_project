@@ -1,19 +1,32 @@
-window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-});
+function _all(q, e=document){return e.querySelectorAll(q)}
+function _one(q, e=document){return e.querySelector(q)}
 
+////////////////////////////////
+// SIGN UP USER
 async function createUser(){
-    const form = event.target.form;
+    const form = event.target;
 
     const connection = await fetch("/signup", {
         method : "POST",
         body : new FormData(form)
     });
 
-    console.log(connection.ok)
+    response = await connection.text();
+
+    if (response == "email error"){
+        const ErrorInputElement = form.querySelector('[name="user_email"]');
+        databaseErrorsValidation(ErrorInputElement, errorMessage="Email already exists");
+        return;
+    }
+    if (response == "username error"){
+        const ErrorInputElement = form.querySelector('[name="user_name"]');
+        databaseErrorsValidation(ErrorInputElement, errorMessage="Username already exists");
+        return;
+    }
+
     if (!connection.ok){
         console.log("connection failed")
-        alert("could not sign up")
+        return;
     }
 
     // CLEAR INPUT FIELDS IN FORM
@@ -21,8 +34,44 @@ async function createUser(){
     allFormInputs.forEach(input => {
         input.value = "";
     });
+
+    toggleDisplaySignup();
+    toggleDisplayLogin();
 }
 
+////////////////////////////////
+// LOGIN USER
+async function loginUser(){
+    const form = event.target;
+
+    const connection = await fetch("/login", {
+        method : "POST",
+        body : new FormData(form)
+    });
+
+    response = await connection.text();
+
+    if (!connection.ok){
+        console.log("connection failed")
+        return;
+    }
+
+    if (response == "password error"){
+        const ErrorInputElement = form.querySelector('[name="user_password"]');
+        databaseErrorsValidation(ErrorInputElement, errorMessage="Wrong password");
+        return;
+    }
+    if (response == "email error"){
+        const ErrorInputElement = form.querySelector('[name="user_email"]');
+        databaseErrorsValidation(ErrorInputElement, errorMessage="Email doesn't exist");
+        return;
+    }
+
+    window.location.href = "/home"
+}
+
+////////////////////////////////
+// CREATE TWEET
 async function postTweet(){
     const form = event.target.form;
     const connection = await fetch("/tweet", {
@@ -41,8 +90,12 @@ async function postTweet(){
 
     form.querySelector("#image_upload").value = "";
     form.querySelector(".tweet_text").value = "";
+    form.querySelector(".filename").textContent = "";
+    form.querySelector(".checkmark").classList.add("hidden");
 }
 
+////////////////////////////////
+// DISPLAY POSTED TWEET
 async function displayTweet(tweet){
     const container = document.querySelector(".tweets_wrapper");
     const template = document.querySelector('.tweet_template');
@@ -55,15 +108,23 @@ async function displayTweet(tweet){
         clone.querySelector("form").classList.add(`tweet-${tweet.tweet_id}`);
         clone.querySelector(".tweet_id").value = tweet.tweet_id;
         clone.querySelector(".user_id").value = tweet.fk_user_id;
-        clone.querySelector(".user_profile_picture").src = `../images/user_profile_pictures/${tweet.user_profile_picture_path}`;
+        if (tweet.user_profile_picture_path && tweet.user_profile_picture_path !== "0"){
+            clone.querySelector(".user_profile_picture").src = `../images/user_profile_pictures/${tweet.user_profile_picture_path}`;
+        } else {
+            clone.querySelector(".user_profile_picture").src = "../images/user_profile_pictures/fallback_profile_picture.png";
+        }
         clone.querySelector(".user_first_name").textContent = tweet.user_first_name;
         clone.querySelector(".user_info a").href = `/user/${tweet.fk_user_id}`;
 
         if (tweet.user_last_name) {
-            clone.querySelector(".user_last_name").textContent = tweet.user_last_name;
+            clone.querySelector(".user_last_name").textContent = ` ${tweet.user_last_name}`;
         }
 
-        clone.querySelector(".tweet_created_at").textContent = ` · ${tweet.tweet_created_at}`;
+        // CONVERT EPOCH TO DATETIME
+        let timestamp = tweet.tweet_created_at;
+        let converted_epoch = covertEpochToDateTime(timestamp);
+
+        clone.querySelector(".tweet_created_at").textContent = ` · ${converted_epoch}`;
         clone.querySelector(".user_name").textContent = `@${tweet.user_name}`;
         clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
         clone.querySelector(".tweet_image_path").value = tweet.tweet_image_path;
@@ -119,7 +180,7 @@ function openEditTweet(){
     console.log(target_tweet)
 
     // CREATE UPDATE TWEET ELEMENT
-    edit_tweet_form.querySelector("input[name='tweet_text']").value = target_tweet["tweet_text"];
+    edit_tweet_form.querySelector(".tweet_text").value = target_tweet["tweet_text"];
     edit_tweet_form.querySelector("input[name='tweet_id']").value = target_tweet["tweet_id"];
     edit_tweet_form.querySelector(".user_profile_picture").src = `${target_tweet["profile_picture_path"]}`;
 
@@ -157,7 +218,7 @@ async function updateTweet(){
 
     // REQUEST FAILED
     if(!connection.ok){
-        alert("could not tweet")
+        console.log("could not tweet")
         return;
     };
 
@@ -173,8 +234,8 @@ async function updateTweet(){
     let timestamp = updated_tweet.tweet_updated_at;
     let converted_epoch = covertEpochToDateTime(timestamp);
 
-    edited_tweet_element.querySelector(".tweet_updated_at").innerHTML = converted_epoch;
-    edited_tweet_element.querySelector(".tweet_updated_at").classList.remove("hidden")
+    // edited_tweet_element.querySelector(".tweet_updated_at").innerHTML = converted_epoch;
+    // edited_tweet_element.querySelector(".tweet_updated_at").classList.remove("hidden")
     edited_tweet_element.querySelector(".tweet_text").innerHTML = updated_tweet.tweet_text;
 
     // DEFINE IF TWEET INCLUDES AN IMAGE BEFORE UPDATE
@@ -223,7 +284,7 @@ function covertEpochToDateTime(timestamp){
     let ampm = hours >= 12 ? 'PM' : 'AM';
     let minutes = date.getMinutes();
 
-    return `Last edited: ${hours}:${minutes} ${ampm}, ${day}-${month}-${year}`;
+    return `${day}-${month}-${year}`;
 }
 
 ////////////////////////////////
@@ -279,6 +340,7 @@ function toggleFollowButtons(form){
     form.querySelector(".follow-button").classList.toggle("hidden")
     form.querySelector(".unfollow-button").classList.toggle("hidden")
 }
+
 
 function fileUploaded(event){
     // CHECK WHEN FILE IS UPLOADED
@@ -348,10 +410,30 @@ function toggleLikeButtons(form){
     form.querySelector(".dislike-button").classList.toggle("hidden")
 }
 
+function toggleLogout(){
+    console.log("toggle")
+    // TOGGLE HIDDEN CLASS ON LOGOUT POPUP
+    document.querySelector(".logout-wrapper").classList.toggle("hidden")
+}
+
 function openViewMoreOptions(){
     event.target.nextElementSibling.classList.remove("hidden");
 }
 
 function closeViewMoreOptions(){
     event.target.closest(".button-wrapper-inner").classList.add("hidden");
+}
+
+function toggleDisplaySignup(){
+    // TOGGLE HIDDEN CLASS ON SIGN UP FORM
+    document.querySelector(".signup-form-container").classList.toggle("hidden")
+}
+
+function toggleDisplayLogin(){
+    // TOGGLE HIDDEN CLASS ON LOGIN FORM
+    document.querySelector(".login-form-container").classList.toggle("hidden")
+}
+
+function lockBody(){
+    document.querySelector("body").style.overflow = "hidden";
 }

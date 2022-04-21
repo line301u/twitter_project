@@ -10,15 +10,18 @@
 
 <section class="home_section_center">
     <div class="post_tweet-wrapper">
-            % if user["user_profile_picture_path"]:
+            % if user["user_profile_picture_path"] and user["user_profile_picture_path"] != "0":
             <img class="user_profile_picture" src="../images/user_profile_pictures/{{user['user_profile_picture_path']}}" alt="Profile picture">
+            % else:
+            <img class="user_profile_picture" src="../images/user_profile_pictures/fallback_profile_picture.png" alt="Profile picture">
             % end
-        <form enctype="multipart/form-data" onsubmit="return false">
-            <input class="tweet_text" name="tweet_text" type="text" placeholder="What's happening? ">
+        <form enctype="multipart/form-data" onsubmit="validate(postTweet); return false">
+            <textarea class="tweet_text" name="tweet_text" id="tweet_text" rows="1" placeholder="What's happening?" data-validate="str" data-min="1" data-max="280" onkeyup="clear_validate_error()"></textarea>
+            <span class="error_message hidden"></span>
             <div class="buttons-wrapper">
             <div>
             <span class="filename"></span>
-            <input type="file" id="image_upload" name="tweet_image" class="hidden" onchange="fileUploaded(event)"/>
+            <input type="file" id="image_upload" name="tweet_image" class="hidden" onchange="fileUploaded(event)" accept="image/png, image/jpg, image/jpeg"/>
             <label for="image_upload" class="pointer">
                 <svg class="checkmark hidden" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;"  fill="currentColor" xml:space="preserve">
                 <polygon style="fill:#030104;" points="11.941,28.877 0,16.935 5.695,11.24 11.941,17.486 26.305,3.123 32,8.818    "/>
@@ -41,8 +44,10 @@
             <form class="tweet-{{tweet['tweet_id']}}" onsubmit="return false">
                     <input class="tweet_id" name="tweet_id" type="hidden" value="{{tweet['tweet_id']}}">
                     <input class="user_id" name="user_id" type="hidden" value="{{tweet['user_id']}}">
-                        % if tweet["user_profile_picture_path"]:
+                        % if tweet["user_profile_picture_path"] and tweet["user_profile_picture_path"] != "0":
                         <img class="user_profile_picture" src="../images/user_profile_pictures/{{tweet['user_profile_picture_path']}}" alt="Profile picture">
+                        % else:
+                        <img class="user_profile_picture" src="../images/user_profile_pictures/fallback_profile_picture.png" alt="Profile picture">
                         % end
                         <div class="user_info">
                         <a type="button" href="/user/{{tweet['user_id']}}">
@@ -55,7 +60,7 @@
                             <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" aria-label="Verified account" class="twitter-verification"><g><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"></path></g></svg>
                         </span>
                         </a>
-                        <span class="tweet_created_at">· {{tweet["tweet_created_at"]}}</span>
+                        <span class="tweet_created_at">· {{tweet["tweet_created_at_formatted"]}}</span>
                         <span class="tweet_updated_at hidden"> · {{tweet["tweet_updated_at"]}}</span>
                         <span class="user_name">@{{tweet["user_name"]}}</span>
                     </div>
@@ -106,10 +111,12 @@
         % for user in users:
         <form class="follow_recomendations_form" onsubmit="return false">
             <input name="user_id" type="hidden" value="{{user['user_id']}}">
-            % if user["user_profile_picture_path"]:
+            % if user["user_profile_picture_path"] and user["user_profile_picture_path"] != "0":
             <img class="user_profile_picture" src="../images/user_profile_pictures/{{user['user_profile_picture_path']}}" alt="Profile picture">
+            % else:
+            <img class="user_profile_picture" src="../images/user_profile_pictures/fallback_profile_picture.png" alt="Profile picture">
             % end
-            <div>
+            <div class="user_info">
                 <a href="/user/{{user['user_id']}}">
                     <h3 class="p pointer">
                         {{user["user_first_name"]}} 

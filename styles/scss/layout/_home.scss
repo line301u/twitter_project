@@ -3,9 +3,12 @@
 
 .home_main{
     display:grid;
-    grid-template-columns: 1fr 2fr 1.4fr;
+    grid-template-columns: 60px auto;
     grid-template-rows: 1fr min-content;
     margin-bottom: 3rem;
+    @media screen and (min-width: 900px) {
+        grid-template-columns: 0.8fr 2fr 1.4fr;
+    }
 }
 
 .post_tweet-wrapper {
@@ -75,8 +78,17 @@
     margin: 0 1rem 1rem 1rem;
     padding: 1rem;
     position: fixed;
-    width: 350px;
+    width: 30vw;
+    max-width: 350px;
     margin-top: 1rem;
+    display: none;
+    @media screen and (min-width: 900px) {
+        display: block;
+    }
+
+    .user_info{
+        max-width: 80px;
+    }
 
     .user_profile_picture{
         height: 60px;
@@ -96,6 +108,9 @@
 
     h3:hover{
         text-decoration: underline;
+    }
+    button {
+        margin-left: 25px;
     }
 }
 
@@ -133,14 +148,14 @@
         display: flex;
         padding: 1rem;
         border-radius: 20px;
-        input[name="tweet_text"] {
+        .tweet_text {
             border: none;
             background: none;
             min-height: 40px;
             width: 450px;
             margin: 1rem;
         }
-        input[name="tweet_text"]:focus {
+        .tweet_text:focus {
             outline: none;
         }
         .cancel-edit{

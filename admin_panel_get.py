@@ -10,7 +10,7 @@ def _():
         db_connection.row_factory = dict_factory
 
         tweets = db_connection.execute("""
-        SELECT tweets.*, users.user_id, users.user_name, users.user_profile_picture_path, users.user_first_name, users.user_last_name
+        SELECT tweets.*, strftime('%d-%m-%Y', tweets.tweet_created_at, 'unixepoch') as tweet_created_at_formatted, users.user_id, users.user_name, users.user_profile_picture_path, users.user_first_name, users.user_last_name
         FROM tweets
         LEFT OUTER JOIN users
         ON tweets.fk_user_id = users.user_id

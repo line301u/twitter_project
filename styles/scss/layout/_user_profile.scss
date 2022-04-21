@@ -1,0 +1,63 @@
+@use "../global/varibles" as v;
+
+.user_profile_main{
+    display:grid;
+    grid-template-columns: 60px auto;
+    grid-template-rows: 1fr min-content;
+    margin-bottom: 3rem;
+    @media screen and (min-width: 900px) {
+        grid-template-columns: 0.8fr 2fr 1.4fr;
+    }
+
+    .user_profile_picture{
+        object-fit: cover;
+        border-radius: 50%;
+        grid-template-rows: 100%;
+    }
+
+    .user_page_user_info{
+        padding-top: 5rem !important;
+        border: 1px solid v.$line-color;
+        padding: 1rem;
+
+        .user_page_user_info_inner{
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+        .user_profile_picture{
+            height: 120px;
+            width: 120px;
+            margin-bottom: 1rem;
+        }
+        .user_name{
+            direction: block;
+            color: v.$grey;
+        }
+        .user_created_date{
+            margin-top: 1rem;
+            position: relative;
+            color: v.$grey;
+            span{
+                position: relative;
+                height: 20px;
+                width: 20px;
+                margin-right: 25px;
+            }
+        }
+        .calender{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            color: v.$grey;
+            bottom: -1px;
+        }
+    }
+
+    .user_tweets_wrapper{
+        .user_profile_picture{
+            height: 60px;
+            width: 60px;
+        }
+    }
+}

@@ -1,0 +1,40 @@
+@use "../global/varibles" as v;
+
+.admin_tweets_wrapper{
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow:
+    2.8px 2.8px 2.2px rgba(0, 0, 0, 0.031),
+    6.7px 6.7px 5.3px rgba(0, 0, 0, 0.044),
+    12.5px 12.5px 10px rgba(0, 0, 0, 0.055),
+    22.3px 22.3px 17.9px rgba(0, 0, 0, 0.066),
+    41.8px 41.8px 33.4px rgba(0, 0, 0, 0.079),
+    100px 100px 80px rgba(0, 0, 0, 0.11)
+    ;
+    background-color: white;
+
+    .button-wrapper{
+        display: flex;
+        justify-content: flex-end;
+    }
+    .tweet_text{
+        margin-top: 2rem;
+    }
+    h1{
+        margin-bottom: 3rem;
+        text-align: center;
+        padding-top: 2rem;
+    }
+    a{
+        display: inline-flex
+    }
+}
+
+.admin-section{
+    background-color: v.$grey-bg;
+    padding: 5rem 0;
+}
+
+.admin-main{
+    max-width: none;
+}

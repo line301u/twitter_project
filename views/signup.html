@@ -1,24 +1,47 @@
-<div class="signup-form-container">
-    <h1>Sign up</h1> 
-    <form class="signup-form" onsubmit="return false">
-        <label>User name</label>
-        <input name="user_name" type="text" placeholder="User name">
-        <span></span>
-        <label>First name</label>
-        <input name="user_first_name" type="text" placeholder="First name">
-        <span></span>
-        <label>Last name</label>
-        <input name="user_last_name" type="text" placeholder="Last name">
-        <span></span>
-        <label>Email</label>
-        <input name="user_email" type="text" placeholder="Email">
-        <span></span>
-        <label>Password</label>
-        <input name="user_password" type="password" placeholder="Password">
-        <span></span>
-        <label>Profile picture</label>
-        <input type="file" id="user_profile_picture" name="user_profile_picture">
-        <span></span>
-        <button onclick="createUser()">Sign up</button>
-    </form>
+<div class="signup-form-container hidden">
+    <div class="signup-inner">
+        <div onclick="toggleDisplaySignup()">
+            <svg class="close pointer" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="94.926px" height="94.926px" viewBox="0 0 94.926 94.926" style="enable-background:new 0 0 94.926 94.926;" xml:space="preserve">
+                <g>
+                    <path d="M55.931,47.463L94.306,9.09c0.826-0.827,0.826-2.167,0-2.994L88.833,0.62C88.436,0.224,87.896,0,87.335,0   c-0.562,0-1.101,0.224-1.498,0.62L47.463,38.994L9.089,0.62c-0.795-0.795-2.202-0.794-2.995,0L0.622,6.096   c-0.827,0.827-0.827,2.167,0,2.994l38.374,38.373L0.622,85.836c-0.827,0.827-0.827,2.167,0,2.994l5.473,5.476   c0.397,0.396,0.936,0.62,1.498,0.62s1.1-0.224,1.497-0.62l38.374-38.374l38.374,38.374c0.397,0.396,0.937,0.62,1.498,0.62   s1.101-0.224,1.498-0.62l5.473-5.476c0.826-0.827,0.826-2.167,0-2.994L55.931,47.463z"/>
+                </g>
+            </svg>
+        </div>
+        <h1>Sign up</h1> 
+        <form class="signup-form" onsubmit="validate(createUser); return false" enctype="multipart/form-data">
+            <div class="input_group">
+                <input name="user_name" data-input-type="Username" placeholder="#" type="text" data-validate="str" data-min="1" data-max="30" onkeyup="clear_validate_error()">
+                <span class="error_message hidden"></span>
+                <label>User name</label>
+            </div>
+            <div class="full-name-wrapper">
+                <div class="input_group">
+                    <input name="user_first_name" data-input-type="First name" placeholder="#" type="text" data-validate="str" data-min="1" data-max="20" onkeyup="clear_validate_error()">
+                    <span class="error_message hidden"></span>
+                    <label>First name</label>
+                </div>
+                <div class="input_group">
+                    <input name="user_last_name" data-input-type="Last name" placeholder="#" type="text" data-validate="str" data-min="1" data-max="50" onkeyup="clear_validate_error()">
+                    <span class="error_message hidden"></span>
+                    <label>Last name</label>
+                </div>
+            </div>
+            <div class="input_group">
+                <input name="user_email" data-input-type="Email" placeholder="#" type="text" data-validate="email" data-min="1" data-max="100" onkeyup="clear_validate_error()">
+                <span class="error_message hidden"></span>
+                <label>Email</label>
+            </div>
+            <div class="input_group">
+                <input name="user_password" data-input-type="Password" placeholder="#" type="password" data-validate="str" data-min="10" data-max="50" onkeyup="clear_validate_error()">
+                <span class="error_message hidden"></span>
+                <label>Password</label>
+            </div>
+                <div class="input_group profile_picture_input">
+                    <label>Do you want to add a profile picture?</label>
+                    <input type="file" id="user_profile_picture" placeholder="#" name="user_profile_picture" accept="image/png, image/jpg, image/jpeg">
+                    <span class="error_message hidden"></span>
+            </div>
+            <button class="blue-button">Sign up</button>
+        </form>
+    </div>
 </div>

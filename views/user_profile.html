@@ -1,28 +1,45 @@
-% include("header", title=user['user_name'])
+% include("header", title=profile_user['user_name'])
 
-<main>
+<main class="user_profile_main">
     % include("./templates/edit_tweet")
+    <section class="profile_section_left">
+        % include("./templates/nav")
+    </section>
     <section>
-            <form onsubmit="return false">
-                <input name="user_id" type="hidden" value="{{user['user_id']}}">
-                <img src="../images/user_profile_pictures/{{user['user_profile_picture_path']}}" alt="">
-                % if user["followed_by_user"]:
-                <button class="follow-button hidden" onclick="createFollow()">Follow</button>
-                <button class="unfollow-button" onclick="deleteFollow()">Unfollow</button>
-                % else:
-                <button class="follow-button" onclick="createFollow()">Follow</button>
-                <button class="unfollow-button hidden" onclick="deleteFollow()">Unfollow</button>
-                % end
-            </form>
-            <h3>
-            {{user["user_first_name"]}}
-            % if user["user_last_name"]:
-            {{user["user_last_name"]}}
+        <div class="user_page_user_info">
+            % if profile_user["user_profile_picture_path"] and profile_user["user_profile_picture_path"] != "0":
+            <img class="user_profile_picture" src="../images/user_profile_pictures/{{profile_user['user_profile_picture_path']}}" alt="">
+            % else:
+            <img class="user_profile_picture" src="../images/user_profile_pictures/fallback_profile_picture.png" alt="Profile picture">
             % end
-                <span>@{{user["user_name"]}}</span>
-            </h3>
+            <div class="user_page_user_info_inner">
+                <form onsubmit="return false">
+                    <input name="user_id" type="hidden" value="{{profile_user['user_id']}}">
+                    % if profile_user["user_id"] != user["user_id"]:
+                        % if profile_user["followed_by_user"]:
+                        <button class="follow-button hidden" onclick="createFollow()">Follow</button>
+                        <button class="unfollow-button" onclick="deleteFollow()">Unfollow</button>
+                        % else:
+                        <button class="follow-button" onclick="createFollow()">Follow</button>
+                        <button class="unfollow-button hidden" onclick="deleteFollow()">Unfollow</button>
+                        % end
+                    % end
+                </form>
+                <h3>
+                {{profile_user["user_first_name"]}}
+                % if profile_user["user_last_name"]:
+                {{profile_user["user_last_name"]}}
+                % end
+                <span class="twitter-verification-wrapper">
+                    <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" aria-label="Verified account" class="twitter-verification"><g><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"></path></g></svg>
+                </span>
+                    <span class="user_name">@{{profile_user["user_name"]}}</span>
+                </h3>
+            </div>
 
-            <p class="user_created_date">·{{user["user_created_at"]}}</p>
+            <p class="user_created_date">
+                <span><svg viewBox="0 0 24 24" aria-hidden="true" class="calender"><g><path fill="currentColor" d="M19.708 2H4.292C3.028 2 2 3.028 2 4.292v15.416C2 20.972 3.028 22 4.292 22h15.416C20.972 22 22 20.972 22 19.708V4.292C22 3.028 20.972 2 19.708 2zm.792 17.708c0 .437-.355.792-.792.792H4.292c-.437 0-.792-.355-.792-.792V6.418c0-.437.354-.79.79-.792h15.42c.436 0 .79.355.79.79V19.71z"></path><circle fill="currentColor" cx="7.032" cy="8.75" r="1.285"></circle><circle fill="currentColor" cx="7.032" cy="13.156" r="1.285"></circle><circle fill="currentColor" cx="16.968" cy="8.75" r="1.285"></circle><circle fill="currentColor" cx="16.968" cy="13.156" r="1.285"></circle><circle fill="currentColor" cx="12" cy="8.75" r="1.285"></circle><circle fill="currentColor" cx="12" cy="13.156" r="1.285"></circle><circle fill="currentColor" cx="7.032" cy="17.486" r="1.285"></circle><circle fill="currentColor" cx="12" cy="17.486" r="1.285"></circle></g></svg></span>
+                Joined {{profile_user["user_created_at_formatted"]}}</p>
             <div class="follow_count">
                 <p class="user_following_wrap">
                 <span class="user_following_count"></span>
@@ -31,50 +48,113 @@
                 <span class="user_followers_count"></span>
                 </p>
             </div>
-    </section>
-    <div class="user_tweets_wrapper">
-        % if tweets == []:
-        <span class="no-tweets-message">User haven't tweeted yet</span>
-        % end 
-        % for tweet in tweets:
-            <form class="tweet-{{tweet['tweet_id']}}">
-                    <input class="tweet_id" name="tweet_id" type="hidden" value="{{tweet['tweet_id']}}">
-                    <div>
-                    % if user["user_profile_picture_path"]:
-                    <img class="user_profile_picture" src="../images/user_profile_pictures/{{user['user_profile_picture_path']}}" alt="Profile picture">
-                    % end
-                    <span class="user_first_name">{{user["user_first_name"]}}</span>
-                    % if user["user_last_name"]:
-                    <span class="user_last_name">{{user["user_last_name"]}}</span>
-                    % end
-                    <span class="tweet_created_at">{{tweet["tweet_created_at"]}}</span>
-                    % if tweet["tweet_updated_at"]:
-                    <span class="tweet_updated_at hidden">{{tweet["tweet_updated_at"]}}</span>
-                    % end
-                    <span class="user_name">@{{user["user_name"]}}</span>
-                </div>
-                <p class="tweet_text">{{tweet["tweet_text"]}}</p>
-                <input class="tweet_image_path" name="tweet_image_path" type="hidden" value="{{tweet['tweet_image_path']}}">
-                % if tweet["tweet_image_path"] and tweet["tweet_image_path"] != "0":
-                <img class="tweet_image" src="../images/tweet_images/{{tweet['tweet_image_path']}}" alt="Tweet image">
-                % end
-                % if tweet["fk_user_id"] == user["user_id"]:
-                <div class="button-wrapper">
-                    <svg class="view-more" viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi" fill="currentColor"><g><circle cx="5" cy="12" r="2" fill="currentColor"></circle><circle cx="12" cy="12" r="2" fill="currentColor"></circle><circle cx="19" cy="12" r="2" fill="currentColor"></circle></g></svg>
-                    <button onclick="openEditTweet()">Edit</button>
-                    <button onclick="deleteTweet()">Delete tweet</button>
-                </div>
-                % end
-                <div class="tweet_activity">
-                % if tweet["fk_user_id"] != user["user_id"]:
-                    <button>Like</button>
-                    <button>Unlike</button>
-                % end
-                </div>
-            </form>
-            % end 
         </div>
-    </div>
+        <div class="user_tweets_wrapper">
+            % if tweets == []:
+            <span class="no-tweets-message">User haven't tweeted yet</span>
+            % end 
+            % for tweet in tweets:
+                <div>
+                    <form class="tweet-{{tweet['tweet_id']}}" onsubmit="return false">
+                            <input class="tweet_id" name="tweet_id" type="hidden" value="{{tweet['tweet_id']}}">
+                            <input class="user_id" name="user_id" type="hidden" value="{{profile_user['user_id']}}">
+                                % if profile_user["user_profile_picture_path"] and profile_user["user_profile_picture_path"] != "0":
+                                <img class="user_profile_picture" src="../images/user_profile_pictures/{{profile_user['user_profile_picture_path']}}" alt="Profile picture">
+                                % else:
+                                <img class="user_profile_picture" src="../images/user_profile_pictures/fallback_profile_picture.png" alt="Profile picture">
+                                % end
+                                <div class="user_info">
+                                <a type="button" href="/user/{{profile_user['user_id']}}">
+                                <span class="user_first_name">{{profile_user["user_first_name"]}}</span>
+                                % if profile_user["user_last_name"]:
+                                &nbsp;
+                                <span class="user_last_name">{{profile_user["user_last_name"]}}</span>
+                                % end                        
+                                <span class="twitter-verification-wrapper">
+                                    <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" aria-label="Verified account" class="twitter-verification"><g><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"></path></g></svg>
+                                </span>
+                                </a>
+                                <span class="tweet_created_at">· {{tweet["tweet_created_at_formatted"]}}</span>
+                                <span class="tweet_updated_at hidden"> · {{tweet["tweet_updated_at"]}}</span>
+                                <span class="user_name">@{{profile_user["user_name"]}}</span>
+                            </div>
+                        <p class="tweet_text">{{tweet["tweet_text"]}}</p>
+                        <input class="tweet_image_path" name="tweet_image_path" type="hidden" value="{{tweet['tweet_image_path']}}">
+                        % if tweet["tweet_image_path"] and tweet["tweet_image_path"] != "0":
+                        <img class="tweet_image" src="../images/tweet_images/{{tweet['tweet_image_path']}}" alt="Tweet image">
+                        % end
+                        % if profile_user["user_id"] == user["user_id"]:
+                        <div class="button-wrapper">
+                            <svg  onclick="openViewMoreOptions()" class="view-more" viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi" fill="currentColor"><g><circle cx="5" cy="12" r="2" fill="currentColor"></circle><circle cx="12" cy="12" r="2" fill="currentColor"></circle><circle cx="19" cy="12" r="2" fill="currentColor"></circle></g></svg>
+                            <div class="button-wrapper-inner hidden">
+                                <div onclick="closeViewMoreOptions()" class="underlay"></div>
+                                <button onclick="openEditTweet()">Edit</button>
+                                <button onclick="deleteTweet()">Delete tweet</button>
+                            </div>
+                        </div>
+                        % end
+                        <div class="tweet_activity">
+                            % if profile_user["user_id"] != user["user_id"]:
+                            % if tweet["liked_by_user"]:
+                            <button class="like-button hidden" onclick="likeTweet()">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi"><g><path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path></g></svg>
+                            </button>
+                            <button class="dislike-button" onclick="dislikeTweet()">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi"><g><path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12z"></path></g></svg>
+                            </button>
+                            % else:
+                            <button class="like-button" onclick="likeTweet()">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi"><g><path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path></g></svg>
+                            </button>
+                            <button class="dislike-button hidden" onclick="dislikeTweet()">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi"><g><path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12z"></path></g></svg>
+                            </button>
+                            % end
+                        % end
+                        </div>
+                    </form>
+                </div>
+                % end 
+        </div>
+    </section>
+    <section class="profile_section_right">
+        <div class="follow_recomendations">
+            <div>
+            <h2>Who to follow</h2> 
+            % for user_r in user_recomendations:
+            <form class="follow_recomendations_form" onsubmit="return false">
+                <input name="user_id" type="hidden" value="{{user_r['user_id']}}">
+                % if user_r["user_profile_picture_path"] and user_r["user_profile_picture_path"] != "0":
+                <img class="user_profile_picture" src="../images/user_profile_pictures/{{user_r['user_profile_picture_path']}}" alt="Profile picture">
+                % else:
+                <img class="user_profile_picture" src="../images/user_profile_pictures/fallback_profile_picture.png" alt="Profile picture">
+                % end
+                <div class="user_info">
+                    <a href="/user/{{user_r['user_id']}}">
+                        <h3 class="p pointer">
+                            {{user_r["user_first_name"]}} 
+                            % if user_r["user_last_name"]:
+                            {{user_r["user_last_name"]}}
+                            % end
+                            <span class="twitter-verification-wrapper">
+                                <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" aria-label="Verified account" class="twitter-verification"><g><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"></path></g></svg>
+                            </span>
+                        </h3>
+                    </a>
+                    <p>@{{user_r["user_name"]}}</p>
+                </div>
+                % if user_r["followed_by_user"]:
+                <button class="follow-button hidden" onclick="createFollow()">Follow</button>
+                <button class="unfollow-button" onclick="deleteFollow()">Unfollow</button>
+                % else:
+                <button class="follow-button" onclick="createFollow()">Follow</button>
+                <button class="unfollow-button hidden" onclick="deleteFollow()">Unfollow</button>
+                % end
+            </form>
+            % end
+        </div>
+        </div>
+    </section>
 </main>
 
 % include("footer")

@@ -1,6 +1,6 @@
 @use "../global/varibles" as v;
 
-.tweets_wrapper, .user_tweets_wrapper {
+.tweets_wrapper, .user_tweets_wrapper , .admin_tweets_wrapper{
     form {
         display:grid;
         grid-template-columns: 76px auto auto auto auto;
@@ -69,15 +69,6 @@
         color: v.$grey;
     }
 
-    .user_info{
-        grid-area: user_info;
-        a{
-            display: inline-flex
-        }
-        a:hover{
-            text-decoration: underline;
-        }
-    }
     .button-wrapper{
         position: relative;
         .view-more{
@@ -86,6 +77,8 @@
             right: 0;
         }
         .button-wrapper-inner{
+            border-radius: 10px;
+            overflow: hidden;
             position: absolute;
             top: 0;
             right: 0;
@@ -128,6 +121,18 @@
                     height: 20px;
                 }
             }
+        }
+    }
+}
+
+.tweets_wrapper, .user_tweets_wrapper {
+    .user_info{
+        grid-area: user_info;
+        a{
+            display: inline-flex
+        }
+        a:hover{
+            text-decoration: underline;
         }
     }
 }

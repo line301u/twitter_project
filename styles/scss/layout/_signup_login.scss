@@ -1,0 +1,118 @@
+@use "../global/varibles" as v;
+
+.signup-form-container, .login-form-container{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.295);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h1{
+        margin-bottom: 2rem;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+
+        input{
+            width: 100%;
+            display: block;
+            height: 55px;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border:2px solid v.$line-color;
+            outline: none;
+            padding: 20px 0 0 6px;
+            &:focus{
+                border: 2px solid v.$twitter-blue;
+                outline: none;
+                box-shadow: none;
+            }
+            &:focus ~ label{
+                color: v.$twitter-blue;
+                transform: translate( 0px, -100% ) scale(0.80);
+                transition: 0.3s all ease;
+            }
+            &::placeholder {
+                display: none;
+                opacity: 0;
+                visibility: hidden;
+            }
+            &:not(:placeholder-shown) ~ label{
+                transform: translate( 0px, -100% ) scale(0.80);
+            }
+        }
+        .input_group{
+            position: relative;
+
+            span{
+                position: absolute;
+                top: 60px;
+            }
+        }
+        label {
+            position: absolute;
+            pointer-events: none;
+            margin: 0;
+            top: 39%;
+            transform: translate( 10px, -50% ) scale(1);
+            transition: 0.3s all ease;
+            color: v.$grey;
+            font-size: 1rem;
+        }
+        .profile_picture_input{
+            input{
+                border: none;
+                padding-top: 0.7rem;
+            }
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        .profile_picture_input label{
+            position: relative !important;
+            transform: translate( 0px, 0% ) scale(1);
+        }
+        button{
+            margin-top: 1rem;
+            width: 300px;
+            min-height: 38px;
+            align-self: center;
+        }  
+    }
+    .signup-inner, .login-inner{
+        position: relative;
+        width: 600px;
+        padding: 4rem;
+        overflow: auto;
+        max-height: 650px;
+        background-color: v.$light-bg;
+        border-radius: 20px;
+    }
+    .close{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 12px;
+        width: auto;
+        margin: 1.2rem;
+    }
+    .full-name-wrapper{
+        display: flex;
+
+        .input_group:first-child{
+            flex-grow: 1;
+        }
+        .input_group:nth-child(2){
+            flex-grow: 2.5;
+            margin-left: 1rem;
+        }
+    }
+}

@@ -25,15 +25,30 @@ import tweet_update       # PUT
 def _():
     return static_file("app.css", root="./css")
 
+###############################
+@get("/app.css.map")
+def _():
+    return static_file("app.css.map", root="./css")
+
 #####################################
 @get("/app.js")
 def _():
     return static_file("app.js", root="./script")
 
 #####################################
+@get("/validator.js")
+def _():
+    return static_file("validator.js", root="./script")
+
+#####################################
 @get("/user/app.js")
 def _():
     return static_file("app.js", root="./script")
+
+#####################################
+@get("/user/validator.js")
+def _():
+    return static_file("validator.js", root="./script")
 
 ##############################
 @get("/images/tweet_images/<image_name>")
@@ -44,6 +59,11 @@ def _(image_name):
 @get("/images/user_profile_pictures/<image_name>")
 def _(image_name):
     return static_file(image_name, root="./images/user_profile_pictures")
+
+##############################
+@get("/images/welcome_page/<image_name>")
+def _(image_name):
+    return static_file(image_name, root="./images/welcome_page")
 
 ###############################
 run(host="127.0.0.1", port="3333", debug=True, reloader=True)

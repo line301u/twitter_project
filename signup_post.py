@@ -114,26 +114,32 @@ def _():
         }
 
     except Exception as ex:
-        # CHECK IF EMAIL AND USERNAME ALREADY IN SYSTEM IN SYSTEM
-        if 'user_email' in str(ex):
-            print("email already exists")
-        
-        if 'user_name' in str(ex):
-            print("username already exists")
-        
+        print(ex)
         return "something when wrong"
 
     try:
         db_connection = sqlite3.connect("./database/database.sql")
+
         if db_connection:
             db_connection.execute("INSERT INTO users VALUES(:user_id, :user_name, :user_first_name, :user_last_name, :user_email, :user_profile_picture_path, :user_created_at, :user_password)", user).rowcount
-            # db_connection.commit()
+            db_connection.commit()
 
             send_email(user)
 
     except Exception as ex: 
+        # CHECK IF EMAIL AND USERNAME ALREADY IN SYSTEM IN SYSTEM
         print(ex)
-        return "something went wrong"
+        if 'user_email' in str(ex):
+            print("email already exists")
+            return "email error"
+        
+        if 'user_name' in str(ex):
+            print("username already exists")
+            return "username error"
+
+        print(ex)
+        return "Something went wrong"
         
     finally:
-        db_connection.close()
+        if db_connection:
+            db_connection.close()

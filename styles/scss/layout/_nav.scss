@@ -1,8 +1,11 @@
 @use "../global/varibles" as v;
 @use "../global/general";
 
-.home_section_left{
+.home_section_left, .profile_section_left{
     position: relative;
+    @media screen and (min-width: 900px) {
+        padding: 0 1rem;
+    }
     .nav-inner{
         display: flex;
         flex-direction: column;
@@ -11,13 +14,29 @@
         padding: 1rem 0;
         height: 100vh;
         position: fixed;
+        @media screen and (max-width: 900px) {
+            width: 60px;
+            align-items: center;
+        }
     }
 
     nav{
         margin-top: 1.5rem;
         display: flex;
         flex-direction: column;
-        font-size: 1.2rem;
+        align-items: center;
+
+        @media screen and (min-width: 900px) {
+            align-items: flex-start;
+        }
+
+        .nav_text{
+            font-size: 1.2rem;
+            display: none;
+            @media screen and (min-width: 900px) {
+                display: inline-block;
+            }
+        }
 
         svg {
             height: 20px;
@@ -31,6 +50,10 @@
             position: relative;
             margin-bottom: 1.7rem;
             font-size: 1.3rem;
+            width: 20px;
+            @media screen and (min-width: 900px) {
+                width: auto;
+            }    
             .nav-icon{
                 margin-right: 0.5rem;
                 position: relative;
@@ -38,20 +61,118 @@
             }
         }
     }
+    .nav_user {
+        position: relative;
+        @media screen and (min-width: 900px) {
+            left: -0.5rem;
+            padding: 0.5rem;
+        }  
+        &:hover{
+            background-color: v.$grey-bg;
+            border-radius: 200px;
+        }
+    }
+    .nav_user_info{
+        @media screen and (min-width: 900px) {
+            display: flex;
+            align-items: center;
+        }  
+        a:hover{
+            text-decoration: underline;
+        }
+        .view-more{
+            width: 20px;
+            color: v.$grey;
+            display: none;
+
+            @media screen and (min-width: 1200px) {
+                display: block;
+                margin-left: 3rem;
+            }  
+        }
+    }
+    .user_info_text{
+        display: none;
+        @media screen and (min-width: 900px) {
+            display: block;
+        }  
+        h3{
+            display: block;
+        }
+    }
+    .logout_popup_user_info{
+        z-index: 2;
+    }
+    .user_info_text_popup{
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid v.$line-color;
+        z-index: 3;
+
+        .user_profile_picture{
+            margin-right: 1rem;
+        }
+        .user_name{
+            display: block;
+            margin-bottom: 0;
+        }
+    }
+    .logout-wrapper{
+        position: absolute;
+        left: 0;
+        bottom: 60px;
+        background-color: v.$light-bg;
+        z-index: 1;
+        width: 300px;
+        height: auto;
+        background-color: white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        text-align: start;
+        transition: 0.3s;
+        overflow: hidden;
+        box-shadow: 0px 2.3px 3.6px rgb(0 0 0 / 6%), 0px 6.4px 10px rgb(0 0 0 / 9%), 0px 15.4px 24.1px rgb(0 0 0 / 11%), 0px 51px 80px rgb(0 0 0 / 17%);
+        @media screen and (min-width: 900px) {
+            bottom: 85px;
+        }  
+        .underlay{
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+        }
+        h3:hover{
+            text-decoration: underline;
+        }
+        .logout-button {
+            padding: 1rem;
+            color: v.$dark-font-color;
+            z-index: 2;
+            &:hover{
+                background-color: v.$grey-bg;
+                transition: 0.3s;
+                text-decoration: none;
+            }
+        }
+    }
     .user_profile_picture{
-        height: 60px;
-        width: 60px;
+        height: 40px;
+        width: 40px;
         object-fit: cover;
         border-radius: 50%;
         grid-area: user_image;
-        margin-right: 1rem;
         grid-template-rows: 100%;
+        @media screen and (min-width: 900px) {
+            height: 60px;
+            width: 60px;
+            margin-right: 1rem;
+        }   
     }
-    .nav_user_info{
-        display: flex;
-    }
+
     .user_name{
-        margin-bottom: 0.5rem;
         color: v.$grey;
     }
     .logout-button{
@@ -73,6 +194,12 @@
 
 .home_section_left{
     .active-page-profile{
+        @extend .hidden;
+    }
+}
+
+.profile_section_left{
+    .active-page-home{
         @extend .hidden;
     }
 }

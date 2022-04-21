@@ -1,0 +1,77 @@
+@use "../global/varibles" as v;
+
+.welcome_page_main{
+    display:grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: 1fr min-content;
+    height: 100vh;
+    width: 100vw;
+    max-width: none;
+
+    .image_wrapper{
+        position: relative;
+
+        .background_image{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        svg{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: auto;
+            color: white;
+        }
+    }
+    .join-wrapper{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2.5rem;
+        position: relative;
+
+        .logo{
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: v.$twitter-blue;
+            margin: 2.5rem;
+            width: 45px;
+            height: auto;
+        }
+
+        h1{
+            font-size: 3.7rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+        }
+        h2{
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+        }
+        button{
+            width: 300px;
+            min-height: 38px;
+        }
+        .cookie_text{
+            font-size: 0.7rem;
+            color: v.$grey;
+            max-width: 300px;
+            line-height: 1.2;
+            margin-top: 0.5rem;
+        }
+        h3{
+            font-size: 1rem;
+            margin-top: 5rem;
+            margin-bottom: 1rem;
+        }
+        .white-button{
+            color: v.$twitter-blue;
+        }
+    }
+}

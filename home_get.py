@@ -37,7 +37,7 @@ def _():
         db_connection.row_factory = dict_factory
 
         tweets = db_connection.execute("""
-        SELECT tweets.*, users.user_id, users.user_name, users.user_profile_picture_path, users.user_first_name, users.user_last_name, likes.fk_user_id as liked_by_user
+        SELECT tweets.*, strftime('%d-%m-%Y', tweets.tweet_created_at, 'unixepoch') as tweet_created_at_formatted, users.user_id, users.user_name, users.user_profile_picture_path, users.user_first_name, users.user_last_name, likes.fk_user_id as liked_by_user
         FROM tweets
         LEFT OUTER JOIN users
         ON tweets.fk_user_id = users.user_id
@@ -45,8 +45,6 @@ def _():
         ON likes.fk_tweet_id = tweets.tweet_id and likes.fk_user_id = ?
         ORDER BY tweets.tweet_created_at DESC
         """,(user_id, )).fetchall()
-
-        print(tweets)
 
         user = db_connection.execute("""
         SELECT *

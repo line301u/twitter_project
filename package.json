@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "dev": "sass --watch ../styles/scss/app.scss ../css/app.css"
+    "dev": "sass --watch ./styles/scss/app.scss ./css/app.css"
   },
   "author": "",
   "license": "ISC",

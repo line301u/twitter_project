@@ -35,7 +35,7 @@ def _():
             return "User password is too long"
 
         # SUCESS
-        user_email = request.forms.get("user_email")
+        user_email = request.forms.get("user_email").lower()
         user_password = request.forms.get("user_password")
         
         user = {
@@ -59,6 +59,14 @@ def _():
             FROM users
             WHERE user_email = (:user_email)
             """, user).fetchone()
+
+            if not user_db:
+                print("email is not in db")
+                return "email error"
+
+            if user_db and not user_password == user_db["user_password"]:
+                print("Wrong password")
+                return "password error"
 
             # CHECK IF USER IS IN DB
             if user_db and user_password == user_db["user_password"]:
@@ -84,7 +92,7 @@ def _():
                 response.set_cookie("user_information", encoded_jwt)
 
                 redirect("/home")
-                
+
         return redirect("/")
 
     except Exception as ex:
