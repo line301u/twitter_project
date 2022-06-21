@@ -7,7 +7,7 @@ import g
 def send_email(user):
     try:
         sender_email = "line301u@gmail.com"
-        receiver_email = "line301u@gmail.com"
+        receiver_email = user["user_email"]
         password = g.EMAIL_PASSWORD
 
         message = MIMEMultipart("alternative")
@@ -48,6 +48,7 @@ def send_email(user):
             try:
                 server.login(sender_email, password)
                 server.sendmail(sender_email, receiver_email, message.as_string())
+                print(f"email sent to: {receiver_email}")
                 return "yes, email sent"
             except Exception as ex:
                 print(ex)

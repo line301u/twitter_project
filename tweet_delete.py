@@ -23,12 +23,12 @@ def _(tweet_id):
                 response.status = 400
                 return "tweet_id not is not in database"
 
+            # CLOSE DB
+            db_connection.close()
+
     except Exception as ex:
         print(ex)
         return "something went wrong"
-    
-    finally:
-        db_connection.close()
 
     try:
         # CONNECT TO DATABASE
@@ -43,6 +43,9 @@ def _(tweet_id):
 
             db_connection.commit()
 
+            # CLOSE DB
+            db_connection.close()
+
             # SUCESS
             return "tweet deleted"
 
@@ -50,5 +53,3 @@ def _(tweet_id):
         print(ex)
         return "something went wrong"
 
-    finally:
-        db_connection.close()

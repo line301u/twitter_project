@@ -128,8 +128,17 @@
 .tweets_wrapper, .user_tweets_wrapper {
     .user_info{
         grid-area: user_info;
+        .user_info_inner{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .tweet_created_at{
+            margin-left: 0.2rem;
+        }
         a{
-            display: inline-flex
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
         }
         a:hover{
             text-decoration: underline;

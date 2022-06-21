@@ -6,7 +6,6 @@
     width: 100vw;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.295);
     z-index: 5;
     display: flex;
     justify-content: center;
@@ -14,6 +13,12 @@
 
     h1{
         margin-bottom: 2rem;
+    }
+
+    .file_upload_icon{
+        label{
+            pointer-events: all !important;
+        }
     }
 
     form {
@@ -48,6 +53,37 @@
                 transform: translate( 0px, -100% ) scale(0.80);
             }
         }
+        .filename{
+            position: static !important;
+            display: block;
+        }
+        label{
+            position: relative;
+        }
+        .checkmark{
+            position: absolute;
+            width: 15px !important;
+            right: 8px;
+            top: -7px;
+            color: green;
+        }
+        .filename{
+            max-width: 250px;
+            display: block;
+            font-size: 0.8rem;
+            color: v.$grey;
+            
+        }
+        .file_error {
+            left: 0;
+            top: 25px !important;
+        }
+        .icon{
+            width: 20px;
+            height: auto;
+            color: v.$twitter-blue;
+            margin-right: 0.5rem;
+        }
         .input_group{
             position: relative;
 
@@ -79,22 +115,32 @@
         .profile_picture_input label{
             position: relative !important;
             transform: translate( 0px, 0% ) scale(1);
+            pointer-events:all;
         }
         button{
             margin-top: 1rem;
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
             min-height: 38px;
             align-self: center;
         }  
     }
     .signup-inner, .login-inner{
         position: relative;
-        width: 600px;
-        padding: 4rem;
+        width: 90vw;
+        max-width: 600px;
+        padding: 3.5rem 2rem;
         overflow: auto;
         max-height: 650px;
         background-color: v.$light-bg;
         border-radius: 20px;
+
+
+        @media screen and (min-width: 900px) {
+            width: 600px;
+            padding: 4rem;
+            max-height: 650px;
+        }
     }
     .close{
         position: absolute;
@@ -115,4 +161,12 @@
             margin-left: 1rem;
         }
     }
+}
+
+.login-form-container{
+    background-color: #999999;
+}
+
+.signup-form-container{
+    background-color: rgba(0, 0, 0, 0.295);
 }

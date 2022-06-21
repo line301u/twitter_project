@@ -24,6 +24,7 @@ main, footer{
     width: 80px;
     color: v.$light-font-color;
     font-weight: 700;
+    font-size: 0.9rem;
 }
 .unfollow-button, .white-button{
     width: 100px;
@@ -34,6 +35,7 @@ main, footer{
     width: 80px;
     color: v.$dark-font-color;
     font-weight: 700;
+    font-size: 0.9rem;
 }
 .blue-button{
     width: 100px;
@@ -44,6 +46,7 @@ main, footer{
     width: 80px;
     color: v.$light-font-color;
     font-weight: 700;
+    font-size: 0.9rem;
 }
 
 .icon-disabled{
@@ -59,8 +62,8 @@ button {
 }
 
 .like-button{
-    height: 20px;
-    width: 20px;
+    height: 22px;
+    width: 22px;
     background: none;
     border: none;
     fill: v.$grey;
@@ -71,8 +74,8 @@ button {
 }
 
 .dislike-button{
-    height: 20px;
-    width: 20px;
+    height: 22px;
+    width: 22px;
     background: none;
     border: none;
     fill: v.$like-color;
@@ -87,6 +90,7 @@ button {
     margin-left: 0.2rem;
     width: 20px;
     height: 20px;
+    z-index: -1;
     .twitter-verification{
         color: v.$twitter-blue;
         position: absolute;

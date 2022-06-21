@@ -18,7 +18,7 @@ def _(tweet_id):
             return "tweet_id is not valid"
         
         # GET USER_ID FROM COOKIE
-        user_information = request.get_cookie("user_information")
+        user_information = request.get_cookie("user_information", secret=g.COOKIE_SECRET)
         encoded_user_information = jwt.decode(user_information, g.COOKIE_SECRET, algorithms="HS256")
 
         if not encoded_user_information["user_id"]:
@@ -30,7 +30,7 @@ def _(tweet_id):
             return "user_id is not valid"
         
         if str(encoded_user_information["user_id"]) == encoded_user_information["user_id"]:
-            return "user cannot unfollow itself"
+            return "user cannot like tweets by itself"
 
         # SUCESS
         user_id = encoded_user_information["user_id"]
@@ -40,6 +40,7 @@ def _(tweet_id):
         print(ex)
 
     try:
+        # CONNECT TO DATABASE
         db_connection = sqlite3.connect("./database/database.sql")
 
         if db_connection:
@@ -62,11 +63,10 @@ def _(tweet_id):
 
             db_connection.commit()
 
+            # CLOSE DB
+            db_connection.close()
+
             return "like deleted"
 
     except Exception as ex:
         print(ex)
-
-    finally:
-        if db_connection:
-            db_connection.close()

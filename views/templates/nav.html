@@ -27,7 +27,7 @@
         </nav>
     </div>
         <div class="nav_user">
-            <div class="nav_user_info pointer" onclick="toggleLogout()">
+            <div class="nav_user_info pointer">
                 % if user["user_profile_picture_path"] and user["user_profile_picture_path"] != "0":
                 <img class="user_profile_picture" src="../images/user_profile_pictures/{{user['user_profile_picture_path']}}" alt="Profile picture">
                 % else:
@@ -45,7 +45,7 @@
                 <svg class="view-more" viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi" fill="currentColor"><g><circle cx="5" cy="12" r="2" fill="currentColor"></circle><circle cx="12" cy="12" r="2" fill="currentColor"></circle><circle cx="19" cy="12" r="2" fill="currentColor"></circle></g></svg>
             </div>
             <div class="logout-wrapper hidden">
-                <div onclick="toggleLogout()" class="underlay"></div>
+                <div class="underlay"></div>
                 <div class="logout_popup_user_info">
                     <div class="user_info_text_popup">
                         % if user["user_profile_picture_path"] and user["user_profile_picture_path"] != "0":

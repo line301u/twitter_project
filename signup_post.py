@@ -64,11 +64,12 @@ def _():
             file_name, file_extension = os.path.splitext(user_profile_picture.filename)
 
             # VALIDATE EXTENSION
-            if file_extension not in (".png", ".jpeg", ".jpg"):
+            if file_extension not in (".png", ".jpeg", ".jpg", ".JPG", ".heic", ".HEIC"):
                 return "image not allowed"
             
             # OVERWRITE JPG TO JPEG SO IMGHDR WILL PASS VALIDATION
             if file_extension == ".jpg": file_extension = ".jpeg"
+            if file_extension == ".JPG": file_extension = ".jpeg"
             
             # CREATE IMAGE NAME
             image_id = str(uuid.uuid4())
@@ -88,7 +89,7 @@ def _():
             if file_extension != f".{imghdr_extension}":
                 print("not an image file")
                 os.remove(f"./images/user_profile_pictures/{image_name}")
-                return "Not an image file"
+                return "not an image file"
 
         # SUCESS
         user_name = request.forms.get("user_name")
@@ -118,17 +119,21 @@ def _():
         return "something when wrong"
 
     try:
+        # CONNECT TO DB
         db_connection = sqlite3.connect("./database/database.sql")
 
         if db_connection:
             db_connection.execute("INSERT INTO users VALUES(:user_id, :user_name, :user_first_name, :user_last_name, :user_email, :user_profile_picture_path, :user_created_at, :user_password)", user).rowcount
             db_connection.commit()
 
+            # CLOSE DB
+            db_connection.close()
+            
+            # SEND EMAIL TO USER
             send_email(user)
 
     except Exception as ex: 
         # CHECK IF EMAIL AND USERNAME ALREADY IN SYSTEM IN SYSTEM
-        print(ex)
         if 'user_email' in str(ex):
             print("email already exists")
             return "email error"
@@ -139,7 +144,3 @@ def _():
 
         print(ex)
         return "Something went wrong"
-        
-    finally:
-        if db_connection:
-            db_connection.close()

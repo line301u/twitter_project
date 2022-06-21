@@ -61,10 +61,12 @@ def _():
             """, user).fetchone()
 
             if not user_db:
+                response.status = 400
                 print("email is not in db")
                 return "email error"
 
             if user_db and not user_password == user_db["user_password"]:
+                response.status = 400
                 print("Wrong password")
                 return "password error"
 
@@ -82,6 +84,9 @@ def _():
 
                 db_connection.commit()
 
+                # CLOSE DB
+                db_connection.close()
+
                 user_information = {
                     "user_name" : user_db["user_name"],
                     "user_session_id" : user_session_information["user_session_id"],
@@ -89,7 +94,7 @@ def _():
                 }
 
                 encoded_jwt = jwt.encode(user_information, g.COOKIE_SECRET, algorithm="HS256")
-                response.set_cookie("user_information", encoded_jwt)
+                response.set_cookie("user_information", encoded_jwt, secret=g.COOKIE_SECRET)
 
                 redirect("/home")
 
@@ -98,8 +103,3 @@ def _():
     except Exception as ex:
         raise
         print(ex)
-
-    finally:
-        if db_connection:
-            db_connection.close()
-

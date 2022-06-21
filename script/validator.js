@@ -1,8 +1,13 @@
+export {validate, backendErrorsValidation, clear_validate_error}
 
-// ##############################
-function validate(callback){
+function _all(q, e=document){return e.querySelectorAll(q)}
+function _one(q, e=document){return e.querySelector(q)}
+
+////////////////////////////////
+// VALIDATE FORM
+export default function validate(event, callback){
     const form = event.target
-    console.log(form)
+
     _all("[data-validate]",form).forEach(function(element){ 
         element.classList.remove("validate_error")
         element.style.backgroundColor = "white"
@@ -15,14 +20,18 @@ function validate(callback){
                 element.nextElementSibling.textContent = `${inputType} is missing`
                 element.nextElementSibling.classList.remove("hidden")
                 element.classList.add("validate_error")
-                element.closest(".input_group").style.marginBottom = "1rem"
+                if (element.closest(".input_group")){
+                    element.closest(".input_group").style.marginBottom = "1rem"
+                }
             }
             if (element.value.length > parseInt(element.getAttribute("data-max"))){
                 let inputType = element.getAttribute('data-input-type')
                 element.nextElementSibling.textContent = `${inputType} is missing`
                 element.nextElementSibling.classList.remove("hidden")
                 element.classList.add("validate_error")
-                element.closest(".input_group").style.marginBottom = "1rem"
+                if (element.closest(".input_group")){
+                    element.closest(".input_group").style.marginBottom = "1rem"
+                }
             }
 
         break;
@@ -40,25 +49,48 @@ function validate(callback){
                 element.nextElementSibling.textContent = "Email is not valid"
                 element.nextElementSibling.classList.remove("hidden")
                 element.classList.add("validate_error")
-                element.closest(".input_group").style.marginBottom = "1rem"
+                if (element.closest(".input_group")){
+                    element.closest(".input_group").style.marginBottom = "1rem"
+                }
             }
             if( element.value.length < parseInt(element.getAttribute("data-min"))){
                 element.nextElementSibling.textContent = "Email is missing"
                 element.nextElementSibling.classList.remove("hidden")
                 element.classList.add("validate_error")
-                element.closest(".input_group").style.marginBottom = "1rem"
+                if (element.closest(".input_group")){
+                    element.closest(".input_group").style.marginBottom = "1rem"
+                }
             }
             if (element.value.length > parseInt(element.getAttribute("data-max"))){
                 element.nextElementSibling.textContent = "Email is too long"
                 element.nextElementSibling.classList.remove("hidden")
                 element.classList.add("validate_error")
-                element.closest(".input_group").style.marginBottom = "1rem"
+                if (element.closest(".input_group")){
+                    element.closest(".input_group").style.marginBottom = "1rem"
+                }
+            }
+        break;
+        case "password":
+            if( element.value.length < parseInt(element.getAttribute("data-min"))){
+                element.nextElementSibling.textContent = "Password is too short"
+                element.nextElementSibling.classList.remove("hidden")
+                element.classList.add("validate_error")
+                if (element.closest(".input_group")){
+                    element.closest(".input_group").style.marginBottom = "1rem"
+                }
+            }
+            if (element.value.length > parseInt(element.getAttribute("data-max"))){
+                element.nextElementSibling.textContent = "Password is too long"
+                element.nextElementSibling.classList.remove("hidden")
+                element.classList.add("validate_error")
+                if (element.closest(".input_group")){
+                    element.closest(".input_group").style.marginBottom = "1rem"
+                }
             }
         break;
         case "re":       
             var regex = new RegExp(element.getAttribute("data-re"));
             if( ! regex.test(element.value) ){
-            console.log("phone error")
             element.classList.add("validate_error")
             }
         break;
@@ -70,27 +102,36 @@ function validate(callback){
         }
     })
 
-    if( ! _one(".validate_error", form) ){ callback(); return }
-    // _one(".validate_error", form).focus()
+    if( ! _one(".validate_error", form) ){ callback(event); return }
+
     }
 
-    // ##############################
-    function databaseErrorsValidation(element, errorMessage){
-        element.nextElementSibling.textContent = errorMessage;
-        element.nextElementSibling.classList.remove("hidden");
+////////////////////////////////
+// SHOW ERRORS DATABASE RESPONSE
+function backendErrorsValidation(element, errorMessage, elementType){
+    element.nextElementSibling.textContent = errorMessage;
+    element.nextElementSibling.classList.remove("hidden");
+
+    if (elementType !== "file"){
         element.classList.add("validate_error");
-        element.closest(".input_group").style.marginBottom = "1rem";
     }
-    
-  // ##############################
-    function clear_validate_error(){
-        console.log("clear input")
-        if (event.target.classList.contains("validate_error")){
-            const element = event.target;
-            element.classList.remove("validate_error")
-            element.nextElementSibling.textContent = ""
-            element.nextElementSibling.classList.add("hidden")
+
+    if (element.closest(".input_group")){
+        element.closest(".input_group").style.marginBottom = "1rem"
+    }
+}
+
+////////////////////////////////
+// CLEAR INPUTS ON KEYUP AFTER ERROR
+function clear_validate_error(event){
+    if (event.target.classList.contains("validate_error")){
+        const element = event.target;
+        element.classList.remove("validate_error")
+        element.nextElementSibling.textContent = ""
+        element.nextElementSibling.classList.add("hidden")
+        if (element.closest(".input_group")){
             element.closest(".input_group").style.marginBottom = "0rem"
         }
     }
+}
 

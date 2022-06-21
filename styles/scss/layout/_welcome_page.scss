@@ -1,14 +1,28 @@
 @use "../global/varibles" as v;
 
 .welcome_page_main{
-    display:grid;
-    grid-template-columns: 1.5fr 1fr;
-    grid-template-rows: 1fr min-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    
+    @media screen and (min-width: 900px) {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        grid-template-rows: 1fr min-content;
+        max-width: none;
+
+        position: static;
+    }
     height: 100vh;
     width: 100vw;
-    max-width: none;
 
     .image_wrapper{
+        display: none;
+        @media screen and (min-width: 900px) {
+            display: block;
+        }
+
         position: relative;
 
         .background_image{
@@ -32,7 +46,12 @@
         flex-direction: column;
         justify-content: center;
         padding: 2.5rem;
-        position: relative;
+        margin: 0 auto;
+
+        @media screen and (min-width: 900px) {
+            position: relative;
+            margin: 0 0;
+        }
 
         .logo{
             position: absolute;
@@ -45,14 +64,20 @@
         }
 
         h1{
-            font-size: 3.7rem;
+            font-size: 3rem;
             font-weight: 800;
             margin-bottom: 3rem;
+            @media screen and (min-width: 900px) {
+                font-size: 3.7rem;
+            }
         }
         h2{
-            font-size: 1.9rem;
+            font-size: 1.5rem;
             font-weight: 800;
             margin-bottom: 2rem;
+            @media screen and (min-width: 900px) {
+                font-size: 1.9rem;
+            }
         }
         button{
             width: 300px;
@@ -67,8 +92,12 @@
         }
         h3{
             font-size: 1rem;
-            margin-top: 5rem;
+            margin-top: 3rem;
             margin-bottom: 1rem;
+
+            @media screen and (min-width: 900px) {
+                margin-top: 3rem;
+            }
         }
         .white-button{
             color: v.$twitter-blue;

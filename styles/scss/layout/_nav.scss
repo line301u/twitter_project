@@ -14,6 +14,7 @@
         padding: 1rem 0;
         height: 100vh;
         position: fixed;
+        z-index: 2;
         @media screen and (max-width: 900px) {
             width: 60px;
             align-items: center;
@@ -87,7 +88,7 @@
 
             @media screen and (min-width: 1200px) {
                 display: block;
-                margin-left: 3rem;
+                margin-left: 1.5rem;
             }  
         }
     }
@@ -98,6 +99,7 @@
         }  
         h3{
             display: block;
+            max-width: 90px;
         }
     }
     .logout_popup_user_info{

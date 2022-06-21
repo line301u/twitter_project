@@ -30,6 +30,7 @@ def _(user_id):
             return "user_id is not valid"
         
         if str(encoded_user_information["user_id"]) == user_id:
+            response.status = 400
             return "user cannot unfollow itself"
 
         # SUCESS
@@ -40,6 +41,7 @@ def _(user_id):
         print(ex)
 
     try:
+        # CONNECT TO DATABASE
         db_connection = sqlite3.connect("./database/database.sql")
 
         # CHECK IF FOLLOW EXISTS
@@ -51,6 +53,7 @@ def _(user_id):
         print(user_is_followed_by_user)
 
         if not user_is_followed_by_user:
+            response.status = 400
             return "follow doesnt exist"
 
         # DELETE FOLLOW
@@ -59,14 +62,13 @@ def _(user_id):
             DELETE FROM followers
             WHERE fk_follow_initiator = ? and fk_follow_reciever = ?
             """, (unfollow_initiator_user_id, unfollow_reciever_user_id)).rowcount
-
+        
             db_connection.commit()
+
+            # CLOSE DB
+            db_connection.close()
             
             return "follow deleted"
 
     except Exception as ex:
         print(ex)
-
-    finally:
-        if db_connection:
-            db_connection.close()

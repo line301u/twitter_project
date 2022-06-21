@@ -1,0 +1,10 @@
+./node_modules
+./bin
+./include
+./lib
+./package-lock.json
+./package.json
+./pyvenv.cfg
+./__pycache__
+./pyvenv.cfg
+./vscode

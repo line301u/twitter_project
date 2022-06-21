@@ -33,6 +33,9 @@ def _(tweet_id):
                 response.status = 400
                 return "tweet_id not is not in database"
 
+        # CLOSE DB
+            db_connection.close()
+
         # VALIDATE IMAGE
         tweet_image = request.files.get("tweet_image")
 
@@ -40,8 +43,13 @@ def _(tweet_id):
             file_name, file_extension = os.path.splitext(tweet_image.filename)
 
             # VALIDATE EXTENSION
-            if file_extension not in (".png", ".jpeg", ".jpg"):
+            if file_extension not in (".png", ".jpeg", ".jpg", ".JPG", ".heic", ".HEIC"):
+                response.status = 400
                 return "image not allowed"
+
+            # OVERWRITE JPG TO JPEG SO IMGHDR WILL PASS VALIDATION
+            if file_extension == ".jpg": file_extension = ".jpeg"
+            if file_extension == ".JPG": file_extension = ".jpeg"
 
             # CREATE IMAGE NAME
             image_id = str(uuid.uuid4())
@@ -49,18 +57,19 @@ def _(tweet_id):
 
             # VALIDATE IMAGE NAME
             if len(tweet_image_name) > g.MAX_LENGHT_IMAGE_PATH:
-                response.status = 400
                 return "file name is too long"
 
+            print(f"./images/tweet_images/{tweet_image_name}")
             # SAVE IMAGE
             tweet_image.save(f"./images/tweet_images/{tweet_image_name}")
 
             # VALIDATE IMAGE FILE 
             imghdr_extension = imghdr.what(f"./images/tweet_images/{tweet_image_name}")
+
             if file_extension != f".{imghdr_extension}":
+                os.remove(f"./images/tweet_images/{tweet_image_name}")
                 print("not an image file")
-                os.remove(f"images/{tweet_image_name}")
-                return "not an image file"
+                return {"error" : "not an image file"}
 
         # SUCESS
         tweet_text = request.forms.get("tweet_text")
@@ -78,9 +87,6 @@ def _(tweet_id):
 
     except Exception as ex:
         print(ex)
-        
-    finally:
-        db_connection.close()
 
     try:
         # CONNECT TO DATABASE
@@ -92,15 +98,14 @@ def _(tweet_id):
             SET tweet_text = :tweet_text, tweet_image_path = :tweet_image_path, tweet_updated_at = :tweet_updated_at
             WHERE tweet_id = :tweet_id
             """, updated_tweet).rowcount
-            print(counter)
 
             # SUCSESS
             db_connection.commit()
+
+            # CLOSE DB
+            db_connection.close()
 
             return updated_tweet
     
     except Exception as ex:
         print(ex)
-    
-    finally:
-        db_connection.close()

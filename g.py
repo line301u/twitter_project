@@ -2,7 +2,7 @@ REGEX_EMAIL = '^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[
 
 COOKIE_SECRET = "K!?V98mB2uJ}&8"
 
-EMAIL_PASSWORD = "(3-Ws_KmP7EXX8TQ"
+EMAIL_PASSWORD = "C_*5~22#/mc:UPZ+"
 
 MAX_LENGHT_USER_NAME = 20
 MAX_LENGHT_USER_FIRST_NAME = 20

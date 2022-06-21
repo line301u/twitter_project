@@ -18,7 +18,7 @@ def _(profile_user_id):
             response.status = 400
             return "user_id is not valid"
         
-        user_information = request.get_cookie("user_information")
+        user_information = request.get_cookie("user_information", secret=g.COOKIE_SECRET)
         encoded_user_information = jwt.decode(user_information, g.COOKIE_SECRET, algorithms="HS256")
         user_id = encoded_user_information["user_id"]
 
@@ -71,15 +71,11 @@ def _(profile_user_id):
             LIMIT 4;
             """, (user_id, user_id, profile_user_id)).fetchall()
 
-            print(30*"#")
-            print(profile_user)
-            print(logged_in_user)
+            # CLOSE DB
+            db_connection.close()
 
             return dict(profile_user=profile_user, tweets=tweets_by_user, user=logged_in_user, user_recomendations=user_recomendations)
 
     except Exception as ex:
         print(ex)
     
-    finally:
-        if db_connection:
-            db_connection.close()

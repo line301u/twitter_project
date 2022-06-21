@@ -6,7 +6,7 @@
     grid-template-rows: 1fr min-content;
     margin-bottom: 3rem;
     @media screen and (min-width: 900px) {
-        grid-template-columns: 0.8fr 2fr 1.4fr;
+        grid-template-columns: 0.85fr 2fr 1.4fr;
     }
 
     .user_profile_picture{
@@ -55,6 +55,16 @@
     }
 
     .user_tweets_wrapper{
+        position: relative;
+
+        .no-tweets-message{
+            margin: 3rem 1rem;
+            position: absolute;
+            color: v.$grey;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
         .user_profile_picture{
             height: 60px;
             width: 60px;

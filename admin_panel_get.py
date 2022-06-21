@@ -6,6 +6,7 @@ from get_dictonary import dict_factory
 @view("admin_panel")
 def _():
     try:
+        # CONNECT TO DB
         db_connection = sqlite3.connect("./database/database.sql")
         db_connection.row_factory = dict_factory
 
@@ -17,14 +18,10 @@ def _():
         ORDER BY tweets.tweet_created_at DESC
         """).fetchall()
 
-        print(30*"#")
-        print(tweets)
+        # CLOSE DB
+        db_connection.close()
 
         return dict(tweets=tweets)
         
     except Exception as ex:
         print(ex)
-
-    finally:
-        if db_connection:
-            db_connection.close()

@@ -15,11 +15,11 @@ def _():
         # VALIDATE USER INPUTS
         if not request.forms.get("tweet_text"):
             response.status = 400
-            return "tweet_text is missing"
-        
+            return "Tweet text is missing"
+
         if len(request.forms.get("tweet_text")) > g.MAX_LENGHT_TWEET_TEXT:
             response.status = 400
-            return "tweet_text is too long"
+            return "Tweet text is too long"
 
         tweet_image = request.files.get("tweet_image")
 
@@ -27,11 +27,13 @@ def _():
             file_name, file_extension = os.path.splitext(tweet_image.filename)
 
             # VALIDATE EXTENSION
-            if file_extension not in (".png", ".jpeg", ".jpg"):
+            if file_extension not in (".png", ".jpeg", ".jpg", ".JPG", ".heic", ".HEIC"):
+                response.status = 400
                 return "image not allowed"
 
             # OVERWRITE JPG TO JPEG SO IMGHDR WILL PASS VALIDATION
             if file_extension == ".jpg": file_extension = ".jpeg"
+            if file_extension == ".JPG": file_extension = ".jpeg"
 
             # CREATE IMAGE NAME
             image_id = str(uuid.uuid4())
@@ -39,7 +41,6 @@ def _():
 
             # VALIDATE IMAGE NAME
             if len(image_name) > g.MAX_LENGHT_IMAGE_PATH:
-                response.status = 400
                 return "file name is too long"
 
             # SAVE IMAGE
@@ -51,7 +52,7 @@ def _():
             if file_extension != f".{imghdr_extension}":
                 print("not an image file")
                 os.remove(f"./images/tweet_images/{image_name}")
-                return "not an image file"
+                return {"error" : "not an image file"}
 
         # SUCESS
         tweet_text = request.forms.get("tweet_text")
@@ -59,7 +60,7 @@ def _():
         if tweet_image : tweet_image_path = image_name
         tweet_created_at = int(time.time())
 
-        user_information = request.get_cookie("user_information")
+        user_information = request.get_cookie("user_information", secret=g.COOKIE_SECRET)
         encoded_user_information = jwt.decode(user_information, g.COOKIE_SECRET, algorithms="HS256")
         user_id = encoded_user_information["user_id"]
 
@@ -97,13 +98,12 @@ def _():
         WHERE tweets.tweet_id = ?
         """,(tweet_id,)).fetchone()
 
+        # CLOSE DB
+        db_connection.close()
+
         db_tweet = json.dumps(db_tweet)
 
         return db_tweet
 
     except Exception as ex:
         print(ex)
-    
-    finally:
-        if db_connection:
-            db_connection.close()

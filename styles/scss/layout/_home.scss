@@ -3,11 +3,15 @@
 
 .home_main{
     display:grid;
-    grid-template-columns: 60px auto;
+    grid-template-columns: 65px auto;
     grid-template-rows: 1fr min-content;
     margin-bottom: 3rem;
     @media screen and (min-width: 900px) {
-        grid-template-columns: 0.8fr 2fr 1.4fr;
+        grid-template-columns: 0.85fr 2fr 1.4fr;
+    }
+
+    .tweet_image{
+        z-index: -1;
     }
 }
 
@@ -70,6 +74,13 @@
         color: v.$twitter-blue;
         margin-right: 0.5rem;
     }
+    .error_message{
+        margin-left: 1rem;
+        display: block;
+    }
+    .file_error{
+        margin-left: 0;
+    }
 }
 
 .follow_recomendations{
@@ -125,6 +136,10 @@
     left: 0;
     top: 0;
 
+    #edit-tweet-form{
+        flex-grow: 1;
+    }
+
     .user_profile_picture {
         height: 60px;
         width: 60px;
@@ -148,12 +163,18 @@
         display: flex;
         padding: 1rem;
         border-radius: 20px;
+        width: 90vw;
+        max-width: 600px;
+
         .tweet_text {
             border: none;
             background: none;
             min-height: 40px;
-            width: 450px;
+            width: 90%;
             margin: 1rem;
+            @media screen and (min-width: 900px) {
+                max-width: 600px;
+            }
         }
         .tweet_text:focus {
             outline: none;
@@ -169,7 +190,21 @@
         margin: 1rem 0 0 1rem;
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        flex-direction: column;
+
+        @media screen and (min-width: 600px) {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .button-wrapper{
+            margin-top: 2rem;
+            @media screen and (min-width: 600px) {
+                margin-top: 0;
+            }
+
+        }
     }
 
     .tweet_image_tag {

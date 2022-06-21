@@ -7,7 +7,7 @@ import jwt
 @view("index")
 def _():
     try:
-        user_information = request.get_cookie("user_information")
+        user_information = request.get_cookie("user_information", secret=g.COOKIE_SECRET)
 
         if user_information:
             encoded_user_information = jwt.decode(user_information, g.COOKIE_SECRET, algorithms="HS256")
